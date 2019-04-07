@@ -6,7 +6,7 @@
 package opheliasoasis;
 
 /**
- *
+ * Main class and CLI operator.
  * @author Computer
  */
 public class OpheliasOasis {
