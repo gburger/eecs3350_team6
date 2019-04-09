@@ -5,6 +5,9 @@
  */
 package opheliasoasis;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Main class and CLI operator.
  *
@@ -31,7 +34,21 @@ public class OpheliasOasis {
     private void res_ChangeDate() {
     }
 
-    private void lookup() {
+    /**
+     * Prompt a query and return a list of matching reservations.
+     * @param date_in
+     * @return
+     */
+    private List lookup(Date date_in) {
+    }
+
+    /**
+     * Interactively lookup reservations and specify util one reservation is found.
+     *
+     * @param date_in
+     * @return
+     */
+    private int choose_single(Date date_in) {
     }
 
     private void res_Cancel() {
