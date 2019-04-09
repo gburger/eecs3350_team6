@@ -5,6 +5,9 @@
  */
 package opheliasoasis;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Main class and CLI operator.
  *
@@ -31,7 +34,57 @@ public class OpheliasOasis {
     private void res_ChangeDate() {
     }
 
-    private void lookup() {
+    /**
+     * Prompt a query and return a list of matching reservations.
+     * @param cc
+     * @param date_made
+     * @param date_out
+     * @param date_in
+     * @param name
+     * @param room_number
+     * @param email
+     * @param rate
+     * @param type
+     * @param is_canceled
+     * @return
+     */
+    private List lookup(CreditCard cc,
+                        Date date_made,
+                        Date date_out,
+                        Date date_in,
+                        String name,
+                        int room_number,
+                        String email,
+                        float rate,
+                        Reservation.ResType type,
+                        boolean is_canceled) {
+    }
+
+    /**
+     * Interactively lookup reservations and specify util one reservation is found.
+     *
+     * @param cc
+     * @param date_made
+     * @param date_out
+     * @param date_in
+     * @param name
+     * @param room_number
+     * @param email
+     * @param rate
+     * @param type
+     * @param is_canceled
+     * @return
+     */
+    private int choose_single(CreditCard cc,
+                       Date date_made,
+                       Date date_out,
+                       Date date_in,
+                       String name,
+                       int room_number,
+                       String email,
+                       float rate,
+                       Reservation.ResType type,
+                       boolean is_canceled) {
     }
 
     private void res_Cancel() {
