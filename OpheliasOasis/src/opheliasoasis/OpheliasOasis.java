@@ -36,55 +36,19 @@ public class OpheliasOasis {
 
     /**
      * Prompt a query and return a list of matching reservations.
-     * @param cc
-     * @param date_made
-     * @param date_out
      * @param date_in
-     * @param name
-     * @param room_number
-     * @param email
-     * @param rate
-     * @param type
-     * @param is_canceled
      * @return
      */
-    private List lookup(CreditCard cc,
-                        Date date_made,
-                        Date date_out,
-                        Date date_in,
-                        String name,
-                        int room_number,
-                        String email,
-                        float rate,
-                        Reservation.ResType type,
-                        boolean is_canceled) {
+    private List lookup(Date date_in) {
     }
 
     /**
      * Interactively lookup reservations and specify util one reservation is found.
      *
-     * @param cc
-     * @param date_made
-     * @param date_out
      * @param date_in
-     * @param name
-     * @param room_number
-     * @param email
-     * @param rate
-     * @param type
-     * @param is_canceled
      * @return
      */
-    private int choose_single(CreditCard cc,
-                       Date date_made,
-                       Date date_out,
-                       Date date_in,
-                       String name,
-                       int room_number,
-                       String email,
-                       float rate,
-                       Reservation.ResType type,
-                       boolean is_canceled) {
+    private int choose_single(Date date_in) {
     }
 
     private void res_Cancel() {

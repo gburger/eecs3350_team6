@@ -17,16 +17,7 @@ public class Records {
     public Records(String db_loc) {
     }
 
-    public void lookup(CreditCard cc,
-                       Date date_made,
-                       Date date_out,
-                       Date date_in,
-                       String name,
-                       int room_number,
-                       String email,
-                       float rate,
-                       Reservation.ResType type,
-                       boolean is_canceled) {
+    public void lookup(Date date_in) {
     }
 
     public Reservation edit_reservation(int res_id,
