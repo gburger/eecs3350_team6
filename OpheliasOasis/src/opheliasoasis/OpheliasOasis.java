@@ -5,7 +5,7 @@
  */
 package opheliasoasis;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -39,7 +39,7 @@ public class OpheliasOasis {
      * @param date_in
      * @return
      */
-    private List lookup(Date date_in) {
+    private List lookup(LocalDate date_in) {
     }
 
     /**
@@ -48,7 +48,7 @@ public class OpheliasOasis {
      * @param date_in
      * @return
      */
-    private int choose_single(Date date_in) {
+    private int choose_single(LocalDate date_in) {
     }
 
     private void res_Cancel() {

@@ -5,7 +5,12 @@
  */
 package opheliasoasis;
 
-import java.util.Date;
+import javafx.util.Pair;
+
+import java.io.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+
 
 /**
  * A serializable list of all reservations and base rates.
@@ -17,18 +22,18 @@ public class Records {
     public Records(String db_loc) {
     }
 
-    public void lookup(Date date_in) {
+    public void lookup(LocalDate date_in) {
     }
 
     public Reservation edit_reservation(int res_id,
                                         Reservation.ResType res_type,
-                                        Date date_in, Date date_out,
+                                        LocalDate date_in, LocalDate date_out,
                                         String name,
                                         CreditCard cc, String email) {
     }
 
     public Reservation create_reservation(Reservation.ResType res_type,
-                                          Date date_in, Date date_out,
+                                          LocalDate date_in, LocalDate date_out,
                                           String name,
                                           CreditCard cc, String email) {
     }
@@ -36,7 +41,7 @@ public class Records {
     public Reservation checkin_reservation(int res_id) {
     }
 
-    public void change_baseRate(Date date, float new_rate) {
+    public void change_baseRate(LocalDate date, float new_rate) {
     }
 
     public void backup_records() {

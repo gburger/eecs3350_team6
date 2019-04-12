@@ -5,7 +5,7 @@
  */
 package opheliasoasis;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Represents a single reservation and valid operations on it.
@@ -18,11 +18,11 @@ public class Reservation {
         prepaid, sixty_day, conventional, incentive
     };
 
-    public Reservation(ResType res_type, Date date_in, Date date_out,
+    public Reservation(ResType res_type, LocalDate date_in, LocalDate date_out,
                        String name, CreditCard cc, String email) {
     }
 
-    public void change_date(Date date_in, Date date_out) {
+    public void change_date(LocalDate date_in, LocalDate date_out) {
     }
 
     public void cancel() {
