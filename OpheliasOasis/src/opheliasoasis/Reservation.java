@@ -14,12 +14,24 @@ import java.time.LocalDate;
  */
 public class Reservation {
 
+    private final LocalDate date_in;
+    private final LocalDate date_out;
+
+    public LocalDate getDate_in() {
+        return date_in;
+    }
+
+    public LocalDate getDate_out() {
+        return date_out;
+    }
+
     public enum ResType {
         prepaid, sixty_day, conventional, incentive
     };
 
-    public Reservation(ResType res_type, LocalDate date_in, LocalDate date_out,
-                       String name, CreditCard cc, String email) {
+    public Reservation() {
+        this.date_in = date_in;
+        this.date_out = date_out;
     }
 
     public void change_date(LocalDate date_in, LocalDate date_out) {
