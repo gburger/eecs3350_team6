@@ -5,7 +5,7 @@
  */
 package opheliasoasis;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Interface and workhorse for all report generating tasks.
@@ -22,7 +22,7 @@ public class Reports {
      *
      * @param date
      */
-    public void mk_daily_occupancy(Date date /* = today */) {
+    public void mk_daily_occupancy(LocalDate date /* = today */) {
     }
 
     /**
@@ -30,7 +30,7 @@ public class Reports {
      *
      * @param date
      */
-    public void mk_daily_arrivals(Date date /* = today*/) {
+    public void mk_daily_arrivals(LocalDate date /* = today*/) {
     }
 
     /**
@@ -38,19 +38,19 @@ public class Reports {
      *
      * @param date
      */
-    public void mk_expected_occupancy(Date date /* = today*/) {
+    public void mk_expected_occupancy(LocalDate date /* = today*/) {
     }
 
     /**
      * Expected income for the next 30 days.
      */
-    public void mk_expected_income(Date date /* = today*/) {
+    public void mk_expected_income(LocalDate date /* = today*/) {
     }
 
     /**
      * Expected losses from applying incentives.
      */
-    public void mk_incentives(Date date /* = today*/) {
+    public void mk_incentives(LocalDate date /* = today*/) {
     }
 
     /**

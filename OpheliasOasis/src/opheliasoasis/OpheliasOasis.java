@@ -277,8 +277,8 @@ public class OpheliasOasis {
      * @param date_in
      * @return
      */
-    //private List lookup(Date date_in) {
-    //}
+    private List lookup(LocalDate date_in) {
+    }
 
     /**
      * Interactively lookup reservations and specify util one reservation is found.
@@ -286,8 +286,8 @@ public class OpheliasOasis {
      * @param date_in
      * @return
      */
-    //private int choose_single(Date date_in) {
-    //}
+    private int choose_single(LocalDate date_in) {
+    }
 
     private void res_Cancel() {
     }

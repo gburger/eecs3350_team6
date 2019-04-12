@@ -5,8 +5,8 @@
  */
 package opheliasoasis;
 
-import java.util.Date;
-import java.time.*;
+import java.time.LocalDate;
+
 /**
  * Represents a single reservation and valid operations on it.
  *
@@ -44,6 +44,7 @@ public class Reservation {
         
     }
 
+    public void change_date(LocalDate date_in, LocalDate date_out) {
     public ResType getResType(){
         return res_type;
     }
