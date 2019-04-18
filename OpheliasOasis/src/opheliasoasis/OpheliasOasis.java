@@ -173,13 +173,93 @@ public class OpheliasOasis {
                     else
                         System.out.println("This is not a valid credit card number, please try again");
                 }
+                
+                System.out.println("What is the CSV number?");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9]+")&& temp.length()>=3 && temp.length() <= 4){
+                        CSV = Integer.parseInt(temp);
+                        break;
+                    }
+                    else 
+                        System.out.println("This is not a vaild CSV number, please try again.");
+                }
+                                
+                System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9]+") && temp.length()==2 && Integer.parseInt(temp)<= 12){
+                        expMonth = Integer.parseInt(temp);
+                        break;
+                    }
+                    else 
+                        System.out.println("This is not a vaild month, please try again.");
+                }
+                
+                System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9]+") && temp.length()==2){
+                        expYear = Integer.parseInt(temp);
+                        break;
+                    }
+                    else 
+                        System.out.println("This is not a vaild year, please try again.");
+                }
+                
                 break;
             case "conventional":
-                                   
+                System.out.println("What is the credit card holders name?");
+                cardHolder = scanner.nextLine();
+                
+                System.out.print("What is the card number?\n Please only enter the numbers, no spaces or dashes.");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9}+")&& temp.length()==16){
+                        CardNumber = Integer.parseInt(temp);
+                        break;
+                    }
+                    else
+                        System.out.println("This is not a valid credit card number, please try again");
+                }
+                
+                System.out.println("What is the CSV number?");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9]+")&& temp.length()>=3 && temp.length() <= 4){
+                        CSV = Integer.parseInt(temp);
+                        break;
+                    }
+                    else 
+                        System.out.println("This is not a vaild CSV number, please try again.");
+                }
+                                
+                System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9]+") && temp.length()==2 && Integer.parseInt(temp)<= 12){
+                        expMonth = Integer.parseInt(temp);
+                        break;
+                    }
+                    else 
+                        System.out.println("This is not a vaild month, please try again.");
+                }
+                
+                System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9]+") && temp.length()==2){
+                        expYear = Integer.parseInt(temp);
+                        break;
+                    }
+                    else 
+                        System.out.println("This is not a vaild year, please try again.");
+                }
+                                      
                 break;
 
         }
-
+        
     }
 
     private void res_ChangeDate() {
