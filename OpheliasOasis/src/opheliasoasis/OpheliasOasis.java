@@ -40,7 +40,13 @@ public class OpheliasOasis {
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         currentDay = LocalDate.now();
         Scanner scanner = new Scanner(System.in);
-
+        email = "N/A";
+        cardHolder = "N/A";
+        expMonth =0;
+        expYear = 0;
+        CardNumber = 0;
+        CSV =0;
+        
         while (true) {                                                           //get reservation type
             System.out.print("What type of reservation do you wish to create?\n");
             res_type = scanner.nextLine();
@@ -259,7 +265,8 @@ public class OpheliasOasis {
                 break;
 
         }
-        
+        CreditCard creditCard =  new CreditCard(cardHolder, expMonth, expYear, CardNumber, CSV);
+        //Create New Reservation Here
     }
 
     private void res_ChangeDate() {
