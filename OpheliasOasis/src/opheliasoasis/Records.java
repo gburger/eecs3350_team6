@@ -20,21 +20,21 @@ public class Records {
     public void lookup(Date date_in) {
     }
 
-    public Reservation edit_reservation(int res_id,
+    /*public Reservation edit_reservation(int res_id,
                                         Reservation.ResType res_type,
                                         Date date_in, Date date_out,
                                         String name,
                                         CreditCard cc, String email) {
-    }
+    }*/
 
-    public Reservation create_reservation(Reservation.ResType res_type,
+  /*  public Reservation create_reservation(Reservation.ResType res_type,
                                           Date date_in, Date date_out,
                                           String name,
                                           CreditCard cc, String email) {
-    }
+    }*/
 
-    public Reservation checkin_reservation(int res_id) {
-    }
+    /*public Reservation checkin_reservation(int res_id) {
+    }*/
 
     public void change_baseRate(Date date, float new_rate) {
     }
