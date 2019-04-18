@@ -32,10 +32,11 @@ public class OpheliasOasis {
     }
 
     private static void res_Create() {
-        String res_type, name, cc, email;
+        String res_type, temp, name, email, cardHolder;
+        int expMonth, expYear, CardNumber, CSV;
+        long daysbetween, daysInAdvance;
         LocalDate date_in, date_out, currentDay;
-        long daysbetween, dayInAdvance;
-        //res_type=new String("");
+        
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         currentDay = LocalDate.now();
         Scanner scanner = new Scanner(System.in);
@@ -46,16 +47,19 @@ public class OpheliasOasis {
             //check user input for substrings and cast into known type
             if (res_type.toLowerCase().contains("six") || res_type.toLowerCase().contains("60")) {  //look for some form of "sixty" or "60"
                 res_type = "sixty_day";
-                
+                daysInAdvance=60;
                 break;
             } else if (res_type.toLowerCase().contains("pre")) {                                   //look for some form or "prepaid"
                 res_type = "prepaid";
+                daysInAdvance=90;
                 break;
             } else if (res_type.toLowerCase().contains("conv") || res_type.toLowerCase().contains("trad")) { //look for some form of "conventional" or "traditional"
                 res_type = "conventional";
+                daysInAdvance=999;
                 break;
             } else if (res_type.toLowerCase().contains("incen")) {                                   //look for some form of "incentive"
                 res_type = "incentive";
+                daysInAdvance=30;
                 break;
             } else if (res_type.toLowerCase().contains("quit") || res_type.toLowerCase().contains("exit") || res_type.toLowerCase().contains("stop")) { //Stop creating a reservation
                 System.out.print("Exiting Create Reservation\n");
@@ -72,62 +76,106 @@ public class OpheliasOasis {
                 System.out.print("A valid reservation type has not been entered.\n");
             }
         }
-        System.out.print("What is the name on this reservation\n?");
+        
+//Get Res Name
+        System.out.print("What is the name on this reservation?\n");
         name = scanner.nextLine();
+ //Get Check in Date
         System.out.print("What is this the check in date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
+        if(res_type!="incentive"){
+            while (true) {
+                    reEnterDate:
+                    try {
+                        date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
+                        daysbetween= ChronoUnit.DAYS.between(currentDay, date_in);
+                        if (daysbetween < daysInAdvance) {
+                            System.out.print("This check in date is not "+daysInAdvance+" days in advance. A "+res_type+" reservation must be made "+daysInAdvance+" days from today.\n"
+                                             + "Please enter a valid check in day\n");
+                            break reEnterDate;
+                        }
+                        else
+                            break;
+                    }
+                    catch (Exception e) {
+                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                   }
+                }    
+        }
+        else{
+            while (true) {
+                //THIS NEEDS ADDITIONAL LOGIC TO CHECK IF VALID OCCUPANCY FOR RESESERVATION
+                    reEnterDate:
+                    try {
+                        date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
+                        daysbetween= ChronoUnit.DAYS.between(currentDay, date_in);
+                        if (daysbetween > daysInAdvance) {
+                            System.out.print("This check in date is not less than "+daysInAdvance+" days in advance. A "+res_type+" reservation must be made less than"+daysInAdvance+" days from today.\n"
+                                             + "Please enter a valid check in day\n");
+                            break reEnterDate;
+                        }
+                        else
+                            break;
+                    }
+                    catch (Exception e) {
+                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                   }
+                }    
+        }
+//Get Check out date
+        System.out.print("What is this the check out date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
+        while (true) {
+                    reEnterDate:
+                    try {
+                        date_out = LocalDate.from(DTF.parse(scanner.nextLine()));
+                        daysbetween= ChronoUnit.DAYS.between(date_in, date_out);
+                        if (daysbetween <= 0) {
+                            System.out.print("This check in date is on or before the check out date of"+date_out.format(DTF)+"\n"
+                                             + "Please enter a valid check in day\n");
+                            break reEnterDate;
+                        }
+                        else
+                            break;
+                    }
+                    catch (Exception e) {
+                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                   }
+               } 
+ //Gather Reservation specific information
         switch (res_type) {
 
             case "sixty_day":
-                while (true) {
-                    reEnterDate:
-                    try {
-                        date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
-                        daysbetween= ChronoUnit.DAYS.between(currentDay, date_in);
-                        if (daysbetween < 60) {
-                            System.out.print("This check in date is not 60 days in advance. A sixty day reservation must be made sixty days from today.\n"
-                                             + "Please enter a valid check in day\n");
-                            break reEnterDate;
-                        }
-                        else
-                            break;
-                    }
-                    catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
-                   }
-                }                  
+              System.out.print("What is the email address for this reservation?");
+              while(true){
+                  temp = scanner.nextLine();
+                  if (temp.contains("@")&&(temp.contains(".com")||temp.contains(".edu")||temp.contains(".gov")||temp.contains(".org"))){
+                  email=temp;
+                  break;
+                  }
+                  else
+                      System.out.print("This is not a valid email address, please try again");
+              }
+              
               break;
             case "incentive":
-                System.out.print("this is an incentive\n");
+                //no addtional needed
                 break;
             case "prepaid":
-                    while (true) {
-                    reEnterDate:
-                    try {
-                        date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
-                        daysbetween= ChronoUnit.DAYS.between(currentDay, date_in);
-                        if (daysbetween < 90) {
-                            System.out.print("This check in date is not 60 days in advance. A sixty day reservation must be made sixty days from today.\n"
-                                             + "Please enter a valid check in day\n");
-                            break reEnterDate;
-                        }
-                        else
-                            break;
-                    }
-                    catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
-                   }
-                }                  
-                break;
-            case "conventional":
-                   while (true) {
-                    try {
-                        date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
+                System.out.println("What is the credit card holders name?");
+                cardHolder = scanner.nextLine();
+                
+                System.out.print("What is the card number?\n Please only enter the numbers, no spaces or dashes.");
+                while (true){
+                    temp = scanner.nextLine();
+                    if (temp.matches("[0-9}+")&& temp.length()==16){
+                        CardNumber = Integer.parseInt(temp);
                         break;
                     }
-                    catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
-                   }
-                }                  
+                    else
+                        System.out.println("This is not a valid credit card number, please try again");
+                }
+                break;
+            case "conventional":
+                                   
                 break;
 
         }
