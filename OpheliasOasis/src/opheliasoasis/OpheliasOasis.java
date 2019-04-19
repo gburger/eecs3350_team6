@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 package opheliasoasis;
-import java.time.*;
-import java.time.format.*;
-import java.time.temporal.*;
-//import java.util.Date;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Scanner;
+
 
 /**
  * Main class and CLI operator.
@@ -36,7 +37,7 @@ public class OpheliasOasis {
         int expMonth, expYear, CardNumber, CSV;
         long daysbetween, daysInAdvance;
         LocalDate date_in, date_out, currentDay;
-        
+
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         currentDay = LocalDate.now();
         Scanner scanner = new Scanner(System.in);
@@ -46,7 +47,7 @@ public class OpheliasOasis {
         expYear = 0;
         CardNumber = 0;
         CSV =0;
-        
+
         while (true) {                                                           //get reservation type
             System.out.print("What type of reservation do you wish to create?\n");
             res_type = scanner.nextLine();
@@ -82,7 +83,7 @@ public class OpheliasOasis {
                 System.out.print("A valid reservation type has not been entered.\n");
             }
         }
-        
+
 //Get Res Name
         System.out.print("What is the name on this reservation?\n");
         name = scanner.nextLine();
@@ -105,7 +106,7 @@ public class OpheliasOasis {
                     catch (Exception e) {
                        System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
                    }
-                }    
+                }
         }
         else{
             while (true) {
@@ -125,7 +126,7 @@ public class OpheliasOasis {
                     catch (Exception e) {
                        System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
                    }
-                }    
+                }
         }
 //Get Check out date
         System.out.print("What is this the check out date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
@@ -145,7 +146,7 @@ public class OpheliasOasis {
                     catch (Exception e) {
                        System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
                    }
-               } 
+               }
  //Gather Reservation specific information
         switch (res_type) {
 
@@ -160,7 +161,7 @@ public class OpheliasOasis {
                   else
                       System.out.print("This is not a valid email address, please try again");
               }
-              
+
               break;
             case "incentive":
                 //no addtional needed
@@ -168,7 +169,7 @@ public class OpheliasOasis {
             case "prepaid":
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
-                
+
                 System.out.print("What is the card number?\n Please only enter the numbers, no spaces or dashes.");
                 while (true){
                     temp = scanner.nextLine();
@@ -179,7 +180,7 @@ public class OpheliasOasis {
                     else
                         System.out.println("This is not a valid credit card number, please try again");
                 }
-                
+
                 System.out.println("What is the CSV number?");
                 while (true){
                     temp = scanner.nextLine();
@@ -187,10 +188,10 @@ public class OpheliasOasis {
                         CSV = Integer.parseInt(temp);
                         break;
                     }
-                    else 
+                    else
                         System.out.println("This is not a vaild CSV number, please try again.");
                 }
-                                
+
                 System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
@@ -198,10 +199,10 @@ public class OpheliasOasis {
                         expMonth = Integer.parseInt(temp);
                         break;
                     }
-                    else 
+                    else
                         System.out.println("This is not a vaild month, please try again.");
                 }
-                
+
                 System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
@@ -209,15 +210,15 @@ public class OpheliasOasis {
                         expYear = Integer.parseInt(temp);
                         break;
                     }
-                    else 
+                    else
                         System.out.println("This is not a vaild year, please try again.");
                 }
-                
+
                 break;
             case "conventional":
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
-                
+
                 System.out.print("What is the card number?\n Please only enter the numbers, no spaces or dashes.");
                 while (true){
                     temp = scanner.nextLine();
@@ -228,7 +229,7 @@ public class OpheliasOasis {
                     else
                         System.out.println("This is not a valid credit card number, please try again");
                 }
-                
+
                 System.out.println("What is the CSV number?");
                 while (true){
                     temp = scanner.nextLine();
@@ -236,10 +237,10 @@ public class OpheliasOasis {
                         CSV = Integer.parseInt(temp);
                         break;
                     }
-                    else 
+                    else
                         System.out.println("This is not a vaild CSV number, please try again.");
                 }
-                                
+
                 System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
@@ -247,10 +248,10 @@ public class OpheliasOasis {
                         expMonth = Integer.parseInt(temp);
                         break;
                     }
-                    else 
+                    else
                         System.out.println("This is not a vaild month, please try again.");
                 }
-                
+
                 System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
@@ -258,10 +259,10 @@ public class OpheliasOasis {
                         expYear = Integer.parseInt(temp);
                         break;
                     }
-                    else 
+                    else
                         System.out.println("This is not a vaild year, please try again.");
                 }
-                                      
+
                 break;
 
         }

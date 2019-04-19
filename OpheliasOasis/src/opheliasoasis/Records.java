@@ -10,9 +10,7 @@ import javafx.util.Pair;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
@@ -63,11 +61,6 @@ public class Records {
         }
 
         return result;
-//        return res_db.stream().filter(res -> date_in.isEqual(res.getDate_in())
-//                                        || date_in.isEqual(res.getDate_out())
-//                                        || (date_in.isAfter(res.getDate_in())
-//                                            && date_in.isBefore(res.getDate_out())))
-//                .collect(Collectors.toList());
     }
 
     public Reservation edit_reservation(int res_id,
