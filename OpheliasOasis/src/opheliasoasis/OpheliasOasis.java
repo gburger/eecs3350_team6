@@ -12,13 +12,6 @@ import java.util.List;
 import java.util.Scanner;
 
 
-import java.util.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.io.*;
-//import java.text.SimpleDateFormat;
-
 /**
  * Main class and CLI operator.
  *

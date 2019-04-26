@@ -68,7 +68,7 @@ public class Records {
         return result;
     }
 
-    /*public Reservation edit_reservation(int res_id,
+    public Reservation edit_reservation(int res_id,
                                         Reservation.ResType res_type,
                                         LocalDate date_in, LocalDate date_out,
                                         String name,
