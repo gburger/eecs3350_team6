@@ -17,13 +17,13 @@ import java.util.Scanner;
  * @author Computer
  */
 public class OpheliasOasis {
-
+Records records = new Records();// not sure if this is the correct way to go about this
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         OpheliasOasis OO = new OpheliasOasis(); //needs load logic in constuctor
-   
+        
         System.out.println("Software Engineering");
 
         OO.parse();
@@ -347,7 +347,8 @@ public class OpheliasOasis {
 
         }
         CreditCard creditCard =  new CreditCard(cardHolder, expMonth, expYear, CardNumber, CSV);
-        //Create New Reservation Here
+        
+        records.create_reservation(res_type, date_in, date_out, name, creditCard, email);
     }
 
     private void res_ChangeDate() {
