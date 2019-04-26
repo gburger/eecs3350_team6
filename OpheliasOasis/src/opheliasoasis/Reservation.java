@@ -16,6 +16,7 @@ public class Reservation {
     private ResType res_type;
     private LocalDate date_in;
     private LocalDate date_out;
+    private LocalDate date_create;
     private String name;
     private String email;
     private CreditCard cc;
@@ -23,7 +24,7 @@ public class Reservation {
     private Boolean is_Changed;
     private Boolean is_Cancled;
     private Boolean is_CheckedOut;
-
+    
 
     public enum ResType {
         prepaid, sixty_day, conventional, incentive
@@ -37,6 +38,7 @@ public class Reservation {
         this.name = name;
         this.cc = cc;
         this.email = email;
+        date_create = LocalDate.now();
         roomNumber = 00;
         is_Changed = false;
         is_Cancled = false;
@@ -55,6 +57,9 @@ public class Reservation {
     }
     public LocalDate getDateOut(){
         return date_out;
+    }
+    public LocalDate getDateCreate(){
+        return date_create;
     }
     public String getName(){
         return name;
@@ -104,5 +109,4 @@ public class Reservation {
     public void setCheckOutStatus (Boolean NewStatus){
         is_CheckedOut = NewStatus;
     }
-
 }
