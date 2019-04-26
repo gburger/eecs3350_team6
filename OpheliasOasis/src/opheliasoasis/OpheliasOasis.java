@@ -258,8 +258,15 @@ Records records = new Records();// not sure if this is the correct way to go abo
                     avgOcc = avgOcc+IncentiveCheck.size();
                     runningDay.plusDays(1);
                  }
-                 avgOcc=avgOcc/
-                break;
+                 avgOcc=avgOcc/(daysbetween*45);
+                 if(avgOcc<=60){
+                   break;
+                 }
+                 else{
+                     System.out.println("The average expected occupnacy for the length of this stay is over 60% this is not a valid incetive reservation.\n"
+                             + "This reservation will be deleted.");
+                     return;
+                 }
             case prepaid:
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
