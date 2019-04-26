@@ -28,6 +28,10 @@ public class Records {
     public Records() {
         this("");
     }
+    
+    public ArrayList<Reservation> getResDB() {
+        return res_db;
+    }
 
     public Records(String db_loc) {
         this.db_loc = db_loc;
@@ -52,10 +56,10 @@ public class Records {
         List<Pair<Integer, Reservation>> result = new ArrayList<>();
         for (int i = 0; i < res_db.size(); i++) {
             Reservation res = res_db.get(i);
-            if (date_in.isEqual(res.getDate_in())
-                    || date_in.isEqual(res.getDate_out())
-                    || (date_in.isAfter(res.getDate_in())
-                        && date_in.isBefore(res.getDate_out()))) {
+            if (date_in.isEqual(res.getDateIn())
+                    || date_in.isEqual(res.getDateOut())
+                    || (date_in.isAfter(res.getDateIn())
+                        && date_in.isBefore(res.getDateOut()))) {
                result.add(new Pair(i, res));
             }
         }
@@ -107,8 +111,8 @@ public class Records {
 
         } catch (IOException | ClassNotFoundException e) {
             out.println("Database file is unreadable or not found. Working on empty database.");
-            this.res_db = new ArrayList<Reservation>();
-            this.rate_db = new ArrayList<Integer>();
+            this.res_db = new ArrayList<>();
+            this.rate_db = new ArrayList<>();
         }
     }
 
@@ -116,8 +120,8 @@ public class Records {
 
         if (this.res_db == null || this.rate_db == null) {
             out.println("Writing blank structures to database.");
-            this.res_db = new ArrayList<Reservation>();
-            this.rate_db = new ArrayList<Integer>();
+            this.res_db = new ArrayList<>();
+            this.rate_db = new ArrayList<>();
         }
 
         try (FileOutputStream file = new FileOutputStream(db_loc);
