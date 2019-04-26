@@ -174,7 +174,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
         System.out.print("What is the name on this reservation?\n");
         name = scanner.nextLine();
  //Get Check in Date
-        System.out.print("What is this the check in date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
+        System.out.print("What is this the check in date for this reservation? In mm-dd-yy format, ie 01-01-19\n");
         if(res_type!= Reservation.ResType.incentive){
             while (true) {
                     reEnterDate:
@@ -190,7 +190,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                             break;
                     }
                     catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                       System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
                    }
                 }
         }
@@ -211,12 +211,12 @@ Records records = new Records();// not sure if this is the correct way to go abo
                             break;
                     }
                     catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                       System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
                    }
                 }
         }
 //Get Check out date
-        System.out.print("What is this the check out date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
+        System.out.print("What is this the check out date for this reservation? In mm-dd-yy format, ie 01-01-19\n");
         while (true) {
                     reEnterDate:
                     try {
