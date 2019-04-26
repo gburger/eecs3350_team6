@@ -22,22 +22,102 @@ public class OpheliasOasis {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        OpheliasOasis OO = new OpheliasOasis(); //needs load logic in constuctor
+   
         System.out.println("Software Engineering");
-        res_Create();
+
+        OO.parse();
+        
+        //TODO: Exit logic
+
     }
 
     public OpheliasOasis() {
+        //TODO: Load logic
     }
 
     private void parse() {
+        String cmd;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the Ophelia's Oasis Reservation System.\n"
+                          +"Type a command to begin, or type help for more information");
+    
+        while(true){
+            cmd = scanner.nextLine();
+            if (cmd.toLowerCase().contains("help")||cmd.toLowerCase().contains("?")){
+                System.out.println("Command List:\n"
+                        + "Reservation Create: Create a new reservation\n"
+                        + "Reservation Edit: Edit an already exsiting reservation\n"
+                        + "Reservation Lookup: Look up resrvation information by date\n"
+                        + "Reservation Cancel: Cancel a reservation\n"
+                        + "Reservation Check In: Check in a reservation\n"
+                        + "Make Daily Occupancy: Generate the daily occupancy report\n"
+                        + "Make Daily Arrivals: Generate the daily arrivals report\n"
+                        + "Make Monthy Occupancy: Generate the monthly occupancy report\n"
+                        + "Make Expected Income: Generate the expected income reprot\n"
+                        + "Make Incentive: Generate the incetive discount report\n"
+                        + "Make Bill: Generate a bill\n"
+                        + "Make Email: Generate a reminder email\n"
+                        + "Change Base Rate: Change the base rate for a particular day\n"
+                        + "Exit: Save and exit the reservation system\n");
+            }
+            else if(cmd.toLowerCase().contains("res")){
+                if (cmd.toLowerCase().contains("cre")){
+                   res_Create();
+                }
+                else if(cmd.toLowerCase().contains("edi")){
+                    res_ChangeDate();
+                }
+                else if(cmd.toLowerCase().contains("look")){
+                    res_Checkin();
+                }
+                else if(cmd.toLowerCase().contains("can")){
+                    res_Cancel();
+                }
+                else if(cmd.toLowerCase().contains("che")){
+                    res_Checkin();
+                }            
+            }
+            else if(cmd.toLowerCase().contains("make")){
+                if(cmd.toLowerCase().contains("daily oc")){
+                    mk_DailyOccupancy();
+                }
+                else if(cmd.toLowerCase().contains("daily arr")){
+                    mk_DailyArrival();
+                }
+                else if(cmd.toLowerCase().contains("month")){
+                     mk_MonthlyOccupancy();
+                }
+                else if(cmd.toLowerCase().contains("expe")){
+                    mk_ExpectedIncome();
+                }
+                else if(cmd.toLowerCase().contains("ince")){
+                    mk_IncentivesDiscount();
+                }
+                else if(cmd.toLowerCase().contains("bill")){
+                    mk_Bill();
+                }
+                else if(cmd.toLowerCase().contains("email")){
+                    mk_Email();
+                }
+            }
+            else if(cmd.toLowerCase().contains("change")){
+                changeBaseRate();
+            }
+            else if(cmd.toLowerCase().contains("exit")){
+                break;
+            }
+
+        }
+        
     }
 
-    private static void res_Create() {
-        String res_type, temp, name, email, cardHolder;
+    private void res_Create() {
+        String temp, name, email, cardHolder;
         int expMonth, expYear, CardNumber, CSV;
         long daysbetween, daysInAdvance;
         LocalDate date_in, date_out, currentDay;
-
+        Reservation.ResType res_type;
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         currentDay = LocalDate.now();
         Scanner scanner = new Scanner(System.in);
@@ -50,28 +130,28 @@ public class OpheliasOasis {
 
         while (true) {                                                           //get reservation type
             System.out.print("What type of reservation do you wish to create?\n");
-            res_type = scanner.nextLine();
+            temp = scanner.nextLine();
             //check user input for substrings and cast into known type
-            if (res_type.toLowerCase().contains("six") || res_type.toLowerCase().contains("60")) {  //look for some form of "sixty" or "60"
-                res_type = "sixty_day";
+            if (temp.toLowerCase().contains("six") || temp.toLowerCase().contains("60")) {  //look for some form of "sixty" or "60"
+                res_type = Reservation.ResType.sixty_day;
                 daysInAdvance=60;
                 break;
-            } else if (res_type.toLowerCase().contains("pre")) {                                   //look for some form or "prepaid"
-                res_type = "prepaid";
+            } else if (temp.toLowerCase().contains("pre")) {                                   //look for some form or "prepaid"
+                res_type = Reservation.ResType.prepaid;
                 daysInAdvance=90;
                 break;
-            } else if (res_type.toLowerCase().contains("conv") || res_type.toLowerCase().contains("trad")) { //look for some form of "conventional" or "traditional"
-                res_type = "conventional";
+            } else if (temp.toLowerCase().contains("conv") || temp.toLowerCase().contains("trad")) { //look for some form of "conventional" or "traditional"
+                res_type = Reservation.ResType.conventional;
                 daysInAdvance=999;
                 break;
-            } else if (res_type.toLowerCase().contains("incen")) {                                   //look for some form of "incentive"
-                res_type = "incentive";
+            } else if (temp.toLowerCase().contains("incen")) {                                   //look for some form of "incentive"
+                res_type = Reservation.ResType.incentive;
                 daysInAdvance=30;
                 break;
-            } else if (res_type.toLowerCase().contains("quit") || res_type.toLowerCase().contains("exit") || res_type.toLowerCase().contains("stop")) { //Stop creating a reservation
+            } else if (temp.toLowerCase().contains("quit") || temp.toLowerCase().contains("exit") || temp.toLowerCase().contains("stop")) { //Stop creating a reservation
                 System.out.print("Exiting Create Reservation\n");
                 return;
-            } else if (res_type.toLowerCase().contains("?") || res_type.toLowerCase().contains("help")) {//user help
+            } else if (temp.toLowerCase().contains("?") || temp.toLowerCase().contains("help")) {//user help
                 System.out.print("Valid reservation types are: sixty day, prepaid, convetional, incentive\n"
                         + "A Sixty Day reservation must be made 60 days in advance, it requires an email, name, check in date, and check out date\n"
                         + "A Prepaid reservation must be made 90 days in advance, it requires a name, credit card number, check in and check out data\n"
@@ -89,7 +169,7 @@ public class OpheliasOasis {
         name = scanner.nextLine();
  //Get Check in Date
         System.out.print("What is this the check in date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
-        if(res_type!="incentive"){
+        if(res_type!= Reservation.ResType.incentive){
             while (true) {
                     reEnterDate:
                     try {
@@ -150,7 +230,7 @@ public class OpheliasOasis {
  //Gather Reservation specific information
         switch (res_type) {
 
-            case "sixty_day":
+            case sixty_day:
               System.out.print("What is the email address for this reservation?");
               while(true){
                   temp = scanner.nextLine();
@@ -163,10 +243,10 @@ public class OpheliasOasis {
               }
 
               break;
-            case "incentive":
+            case incentive:
                 //no addtional needed
                 break;
-            case "prepaid":
+            case prepaid:
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
 
@@ -215,7 +295,7 @@ public class OpheliasOasis {
                 }
 
                 break;
-            case "conventional":
+            case conventional:
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
 
