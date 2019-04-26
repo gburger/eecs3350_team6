@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Iterator;
 import javafx.util.Pair;
 
 
@@ -117,8 +116,9 @@ Records records = new Records();// not sure if this is the correct way to go abo
     private void res_Create() {
         String temp, name, email, cardHolder;
         int expMonth, expYear, CardNumber, CSV;
+        float avgOcc;
         long daysbetween, daysInAdvance;
-        LocalDate date_in, date_out, currentDay;
+        LocalDate date_in, date_out, currentDay, runningDay;
         Reservation.ResType res_type;
         List<Pair<Integer, Reservation>> IncentiveCheck;
                 
@@ -126,7 +126,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
         currentDay = LocalDate.now();
         
         Scanner scanner = new Scanner(System.in);
-        
+        avgOcc=0;
         email = "N/A";
         cardHolder = "N/A";
         expMonth =0;
@@ -201,11 +201,6 @@ Records records = new Records();// not sure if this is the correct way to go abo
                     reEnterDate:
                     try {
                         date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
-                        IncentiveCheck = records.lookup(date_in);
-                        if(IncentiveCheck.size()>27)
-                            System.out.println("The expected occupancy rate for this day is greater than the allowed");
-
-                        
                         daysbetween= ChronoUnit.DAYS.between(currentDay, date_in);
                         if (daysbetween > daysInAdvance) {
                             System.out.print("This check in date is not less than "+daysInAdvance+" days in advance. A "+res_type+" reservation must be made less than"+daysInAdvance+" days from today.\n"
@@ -256,7 +251,14 @@ Records records = new Records();// not sure if this is the correct way to go abo
 
               break;
             case incentive:
-                //no addtional needed
+                 daysbetween= ChronoUnit.DAYS.between(date_in, date_out);
+                 runningDay=date_in;
+                 for(int i = 0; i<daysbetween; i++){
+                    IncentiveCheck=records.lookup(runningDay);
+                    avgOcc = avgOcc+IncentiveCheck.size();
+                    runningDay.plusDays(1);
+                 }
+                 avgOcc=avgOcc/
                 break;
             case prepaid:
                 System.out.println("What is the credit card holders name?");
