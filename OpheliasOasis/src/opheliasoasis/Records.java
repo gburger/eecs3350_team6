@@ -77,8 +77,8 @@ public class Records {
 
         fetch_db();
 
-        // TODO: Update for real constructor.
-        res_db.add(new Reservation());
+
+        res_db.add(new Reservation(res_type, date_in, date_out, name, cc, email));
 
         write_db();
 
