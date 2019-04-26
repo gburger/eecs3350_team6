@@ -52,10 +52,10 @@ public class Records {
         List<Pair<Integer, Reservation>> result = new ArrayList<>();
         for (int i = 0; i < res_db.size(); i++) {
             Reservation res = res_db.get(i);
-            if (date_in.isEqual(res.getDate_in())
-                    || date_in.isEqual(res.getDate_out())
-                    || (date_in.isAfter(res.getDate_in())
-                        && date_in.isBefore(res.getDate_out()))) {
+            if (date_in.isEqual(res.getDateIn())
+                    || date_in.isEqual(res.getDateOut())
+                    || (date_in.isAfter(res.getDateIn())
+                        && date_in.isBefore(res.getDateOut()))) {
                result.add(new Pair(i, res));
             }
         }
