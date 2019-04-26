@@ -16,7 +16,7 @@ public class Reservation {
     private ResType res_type;
     private LocalDate date_in;
     private LocalDate date_out;
-    private LocalDate date_create;
+    private LocalDate date_paid;
     private String name;
     private String email;
     private CreditCard cc;
@@ -38,7 +38,6 @@ public class Reservation {
         this.name = name;
         this.cc = cc;
         this.email = email;
-        date_create = LocalDate.now();
         roomNumber = 00;
         is_Changed = false;
         is_Cancled = false;
@@ -58,8 +57,8 @@ public class Reservation {
     public LocalDate getDateOut(){
         return date_out;
     }
-    public LocalDate getDateCreate(){
-        return date_create;
+    public LocalDate getDatePaid(){
+        return date_paid;
     }
     public String getName(){
         return name;
@@ -87,6 +86,9 @@ public class Reservation {
     }
     public void setDateOut(LocalDate NewDate_out){
         date_out = NewDate_out;
+    }
+    public void setDatePaid(LocalDate NewDate_paid){
+        date_paid = NewDate_paid;
     }
     public void setName(String NewName){
         name = NewName;
