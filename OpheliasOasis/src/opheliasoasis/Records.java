@@ -28,6 +28,10 @@ public class Records {
     public Records() {
         this("");
     }
+    
+    public ArrayList<Reservation> getResDB() {
+        return res_db;
+    }
 
     public Records(String db_loc) {
         this.db_loc = db_loc;
@@ -77,8 +81,8 @@ public class Records {
 
         fetch_db();
 
-        // TODO: Update for real constructor.
-        res_db.add(new Reservation());
+
+        res_db.add(new Reservation(res_type, date_in, date_out, name, cc, email));
 
         write_db();
 
@@ -158,4 +162,6 @@ public class Records {
             e.printStackTrace();
         }
     }
+
+
 }

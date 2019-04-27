@@ -27,6 +27,8 @@ public class Reservation {
     private Boolean is_CheckedOut;
     private Boolean is_CheckedIn;
 
+    private LocalDate date_paid;
+        
 
     public enum ResType {
         prepaid, sixty_day, conventional, incentive
@@ -48,12 +50,8 @@ public class Reservation {
         is_CheckedIn = false;
 
     }
-    
-
-    public void change_date(LocalDate date_in, LocalDate date_out) {
-
-    }
-    public void cancel() {
+    public ResType getResType(){
+        return res_type;
     }
 
     public void check_in(int res_id) {
@@ -62,9 +60,6 @@ public class Reservation {
     }
 
     
-    public ResType getResType(){
-        return res_type;
-    }
     public LocalDate getDateIn(){
         return date_in;
     }
