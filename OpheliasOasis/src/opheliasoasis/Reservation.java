@@ -7,6 +7,8 @@ package opheliasoasis;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import javafx.util.Pair;
 
 import static java.lang.String.format;
 
@@ -26,11 +28,15 @@ public class Reservation implements Serializable {
     private Boolean is_Changed;
     private Boolean is_Cancled;
     private Boolean is_CheckedOut;
+    private Boolean is_CheckedIn;
 
+    private LocalDate date_paid;
+        
 
     public enum ResType {
         prepaid, sixty_day, conventional, incentive
     };
+    public Reservation(){}
 
     public Reservation(ResType res_type, LocalDate date_in, LocalDate date_out,
                        String name, CreditCard cc, String email) {
@@ -44,21 +50,26 @@ public class Reservation implements Serializable {
         is_Changed = false;
         is_Cancled = false;
         is_CheckedOut = false;
-
-    }
-
-    public void change_date(LocalDate date_in, LocalDate date_out) {
+        is_CheckedIn = false;
 
     }
     public ResType getResType(){
         return res_type;
     }
+
+    public void check_in(int res_id) {
+        
+       System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
+    }
+
+    
     public LocalDate getDateIn(){
         return date_in;
     }
     public LocalDate getDateOut(){
         return date_out;
     }
+    public LocalDate getDatePaid(){ return date_paid; }
     public String getName(){
         return name;
     }

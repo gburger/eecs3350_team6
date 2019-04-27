@@ -27,6 +27,10 @@ public class Records {
         this("");
     }
 
+    public ArrayList<Reservation> getResDB() {
+        return res_db;
+    }
+
     public Records(String db_loc) {
         this.db_loc = db_loc;
         // Only read_in database if needed by operation.
@@ -58,11 +62,11 @@ public class Records {
             }
         }
 
-
         return result;
     }
 
     public Reservation edit_reservation(int res_id,
+                                        Reservation.ResType res_type,
                                         LocalDate date_in, LocalDate date_out,
                                         String name,
                                         CreditCard cc, String email) {
@@ -87,7 +91,6 @@ public class Records {
 
         write_db();
 
-        // TODO
         return res;
     }
 
@@ -104,10 +107,6 @@ public class Records {
         return res_db.get(res_db.size() - 1);
     }
 
-    // TODO: Return "Reservation"
-    public void checkin_reservation(int res_id) {
-    }
-
     public void change_baseRate(LocalDate date, float new_rate) {
 
 
@@ -115,6 +114,37 @@ public class Records {
     }
 
     public void backup_records() {
+    }
+
+    public void assignDailyRoomnumbers(LocalDate date_in){
+        List<Integer> result = occupiedRoomnumbers(date_in);
+        fetch_db();
+        for (int i = 0, j =1; (i < res_db.size()& j<=45 ); i++, j++) {
+            Reservation res = res_db.get(i);
+            if (date_in.isEqual(res.getDateIn()) && (!(result.contains(j)))) {
+               res.setRoomNumber(j);
+            }
+        }
+
+
+    }
+
+    // gets list of roomnumbers that has been already assigned
+    public List<Integer> occupiedRoomnumbers(LocalDate date_in){
+        fetch_db();
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < res_db.size(); i++) {
+            Reservation res = res_db.get(i);
+            if (date_in.isEqual(res.getDateIn())
+                    || date_in.isEqual(res.getDateOut())
+                    || (date_in.isAfter(res.getDateIn())
+                        && date_in.isBefore(res.getDateOut()))) {
+               result.add(res.getRoomNumber());
+            }
+        }
+        return result;
+
     }
 
     private void read_db() {
