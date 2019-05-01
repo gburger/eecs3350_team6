@@ -58,8 +58,10 @@ public class Reservation implements Serializable {
     }
 
     public void check_in(int res_id) {
-        
-       System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
+        Records record = new Records();
+        Reservation reservation = record.getResDB().get(res_id);
+        reservation.setCheckInStatus(true);
+        System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
     }
 
     
@@ -88,6 +90,9 @@ public class Reservation implements Serializable {
     public Boolean getCancledStatus(){
         return is_Cancled;
     }
+    public Boolean getCheckedInStatus(){
+        return is_CheckedIn;
+    }
     public Boolean getCheckedOutStatus(){
         return is_CheckedOut;
     }
@@ -114,6 +119,9 @@ public class Reservation implements Serializable {
     }
     public void setCancledStatus(Boolean NewStatus){
         is_Cancled = NewStatus;
+    }
+    public void setCheckInStatus (Boolean NewStatus){
+        is_CheckedIn = NewStatus;
     }
     public void setCheckOutStatus (Boolean NewStatus){
         is_CheckedOut = NewStatus;

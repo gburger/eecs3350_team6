@@ -34,7 +34,7 @@ public class Reports {
         ArrayList<Reservation> temp = new ArrayList<>();
         reservations = db.lookup(date);
         for (Pair<Integer, Reservation> reservation : reservations) {
-            if (reservation.getValue().getRoomNumber() != -1 && reservation.getValue().getCancledStatus() == false){
+            if (reservation.getValue().getCheckedInStatus() && reservation.getValue().getCancledStatus() == false){
                 temp.add(reservation.getValue());
             }
         }
@@ -204,8 +204,8 @@ public class Reports {
     public void mk_bill(Reservation reservation) {
         LocalDate date = LocalDate.now();
         System.out.println("Date: " + date);
-        System.out.println("Customer Name: " + reservation.getName() + " Room Number: " + reservation.getRoomNumber());
-        System.out.println("Arrival Date: " + reservation.getDateIn() + " Departure Date: " + reservation.getDateOut());
+        System.out.println("Customer Name: " + reservation.getName() + "\nRoom Number: " + reservation.getRoomNumber());
+        System.out.println("Arrival Date: " + reservation.getDateIn() + ", Departure Date: " + reservation.getDateOut());
         long daysbetween;
         daysbetween= ChronoUnit.DAYS.between(reservation.getDateIn(), reservation.getDateOut());
         System.out.println("Number of nights stayed: " + daysbetween);
@@ -239,14 +239,18 @@ public class Reports {
         reservations = db.lookup(LocalDate.now());
         int reminderDate = 45;
         for (Pair<Integer, Reservation> reservation : reservations) {
-            if (reservation.getValue().getResType() == ResType.sixty_day){
-                if(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getValue().getDateIn()) == reminderDate){
-                    System.out.print("Dear " + reservation.getValue().getEmail() + ",\n"
-                    +"Today is 45 days before your expected arrival date. You must pay "
-                    +"for your reservation within 15 days, otherwise it will be cancelled\n"
-                    +"Thank you for your interest in staying at Ophelias Oasis\n");
+            if (!reservation.getValue().getCancledStatus()) {
+                if (reservation.getValue().getResType() == ResType.sixty_day) {
+                    if (ChronoUnit.DAYS.between(LocalDate.now(), reservation.getValue().getDateIn()) == reminderDate) {
+                        System.out.print("Dear " + reservation.getValue().getEmail() + ",\n"
+                                + "Today is 45 days before your expected arrival date. You must pay "
+                                + "for your reservation within 15 days, otherwise it will be cancelled\n"
+                                + "Thank you for your interest in staying at Ophelias Oasis\n");
+                    } else {
+                        System.out.print("No emails to be sent today\n");
+                    }
                 } else {
-                    System.out.print("No emails need to be sent today\n");
+                    System.out.println("No emails to be sent today");
                 }
             }
         }

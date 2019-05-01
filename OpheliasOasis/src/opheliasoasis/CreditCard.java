@@ -17,10 +17,10 @@ public class CreditCard implements Serializable {
     String CardHolder;
     int expMonth;
     int expYear;
-    int cardNumber;
+    long cardNumber;
     int CSV;
     
-    public CreditCard(String CardHolder, int expMonth, int expYear, int cardNumber, int CSV){
+    public CreditCard(String CardHolder, int expMonth, int expYear, long cardNumber, int CSV){
         this.CardHolder = CardHolder;
         this.expMonth = expMonth;
         this.expYear = expYear;
@@ -41,7 +41,7 @@ public class CreditCard implements Serializable {
         return expYear;
     }
     
-    public int getCardNumber(){
+    public long getCardNumber(){
         return cardNumber;
     }
     
@@ -57,7 +57,7 @@ public class CreditCard implements Serializable {
     public void setExpYear(int NewYear){
         expYear = NewYear;
     }
-    public void setCardNumber(int NewCardNumber){
+    public void setCardNumber(long NewCardNumber){
         cardNumber = NewCardNumber;
     }
     public void setCSV(int NewCSV){
