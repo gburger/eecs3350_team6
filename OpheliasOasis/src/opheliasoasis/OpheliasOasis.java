@@ -48,15 +48,15 @@ Records records = new Records();// not sure if this is the correct way to go abo
             if (cmd.toLowerCase().contains("help")||cmd.toLowerCase().contains("?")){
                 System.out.println("Command List:\n"
                         + "Reservation Create: Create a new reservation\n"
-                        + "Reservation Edit: Edit an already exsiting reservation\n"
-                        + "Reservation Lookup: Look up resrvation information by date\n"
+                        + "Reservation Edit: Edit an already existing reservation\n"
+                        + "Reservation Lookup: Look up reservation information by date\n"
                         + "Reservation Cancel: Cancel a reservation\n"
                         + "Reservation Check In: Check in a reservation\n"
                         + "Make Daily Occupancy: Generate the daily occupancy report\n"
                         + "Make Daily Arrivals: Generate the daily arrivals report\n"
-                        + "Make Monthy Occupancy: Generate the monthly occupancy report\n"
-                        + "Make Expected Income: Generate the expected income reprot\n"
-                        + "Make Incentive: Generate the incetive discount report\n"
+                        + "Make Monthly Occupancy: Generate the monthly occupancy report\n"
+                        + "Make Expected Income: Generate the expected income report\n"
+                        + "Make Incentive: Generate the incentive discount report\n"
                         + "Make Bill: Generate a bill\n"
                         + "Make Email: Generate a reminder email\n"
                         + "Change Base Rate: Change the base rate for a particular day\n"
@@ -64,9 +64,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
             }
             else if(cmd.toLowerCase().contains("res")){
                 if (cmd.toLowerCase().contains("cre")){
-                   res_Create();
+                   res_Create(false);
                 }
                 else if(cmd.toLowerCase().contains("edi")){
+                    edit_reservation();
                 }
                 else if(cmd.toLowerCase().contains("look")){
                     res_Checkin();
@@ -107,14 +108,17 @@ Records records = new Records();// not sure if this is the correct way to go abo
             else if(cmd.toLowerCase().contains("exit")){
                 break;
             }
+            else
+                System.out.println("Not a valid command. Enter 'help' or '?' for a list of valid commands");
 
         }
 
     }
 
-    private void res_Create() {
+    private void res_Create(boolean isChanged) {
         String temp, name, email, cardHolder;
-        int expMonth, expYear, CardNumber, CSV;
+        int expMonth, expYear, CSV;
+        long CardNumber;
         float avgOcc;
         long daysbetween, daysInAdvance;
         LocalDate date_in, date_out, currentDay, runningDay;
@@ -147,7 +151,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                 break;
             } else if (temp.toLowerCase().contains("conv") || temp.toLowerCase().contains("trad")) { //look for some form of "conventional" or "traditional"
                 res_type = Reservation.ResType.conventional;
-                daysInAdvance=999;
+                daysInAdvance=0;
                 break;
             } else if (temp.toLowerCase().contains("incen")) {                                   //look for some form of "incentive"
                 res_type = Reservation.ResType.incentive;
@@ -157,7 +161,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                 System.out.print("Exiting Create Reservation\n");
                 return;
             } else if (temp.toLowerCase().contains("?") || temp.toLowerCase().contains("help")) {//user help
-                System.out.print("Valid reservation types are: sixty day, prepaid, convetional, incentive\n"
+                System.out.print("Valid reservation types are: sixty day, prepaid, conventional, incentive\n"
                         + "A Sixty Day reservation must be made 60 days in advance, it requires an email, name, check in date, and check out date\n"
                         + "A Prepaid reservation must be made 90 days in advance, it requires a name, credit card number, check in and check out data\n"
                         + "A Conventional reservation can be made at any time, it requires a name, credit card number, check in and check out date\n"
@@ -202,7 +206,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
                         daysbetween= ChronoUnit.DAYS.between(currentDay, date_in);
                         if (daysbetween > daysInAdvance) {
-                            System.out.print("This check in date is not less than "+daysInAdvance+" days in advance. A "+res_type+" reservation must be made less than"+daysInAdvance+" days from today.\n"
+                            System.out.print("This check in date is not less than "+daysInAdvance+" days in advance. A "+res_type+" reservation must be made less than "+daysInAdvance+" days from today.\n"
                                              + "Please enter a valid check in day\n");
                             break reEnterDate;
                         }
@@ -222,7 +226,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         date_out = LocalDate.from(DTF.parse(scanner.nextLine()));
                         daysbetween= ChronoUnit.DAYS.between(date_in, date_out);
                         if (daysbetween <= 0) {
-                            System.out.print("This check in date is on or before the check out date of"+date_out.format(DTF)+"\n"
+                            System.out.print("This check in date is on or before the check out date of "+date_out.format(DTF)+"\n"
                                              + "Please enter a valid check in day\n");
                             break reEnterDate;
                         }
@@ -237,7 +241,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
         switch (res_type) {
 
             case sixty_day:
-              System.out.print("What is the email address for this reservation?");
+              System.out.print("What is the email address for this reservation?\n");
               while(true){
                   temp = scanner.nextLine();
                   if (temp.contains("@")&&(temp.contains(".com")||temp.contains(".edu")||temp.contains(".gov")||temp.contains(".org"))){
@@ -245,7 +249,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                   break;
                   }
                   else
-                      System.out.print("This is not a valid email address, please try again");
+                      System.out.print("This is not a valid email address, please try again\n");
               }
 
               break;
@@ -262,7 +266,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                    break;
                  }
                  else{
-                     System.out.println("The average expected occupnacy for the length of this stay is over 60% this is not a valid incetive reservation.\n"
+                     System.out.println("The average expected occupancy for the length of this stay is over 60% this is not a valid incentive reservation.\n"
                              + "This reservation will be deleted.");
                      return;
                  }
@@ -270,7 +274,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
 
-                System.out.print("What is the card number?\n Please only enter the numbers, no spaces or dashes.");
+                System.out.print("What is the card number? Please only enter the numbers, no spaces or dashes.\n");
                 while (true){
                     temp = scanner.nextLine();
                     // TODO
@@ -290,10 +294,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         break;
                     }
                     else
-                        System.out.println("This is not a vaild CSV number, please try again.");
+                        System.out.println("This is not a valid CSV number, please try again.");
                 }
 
-                System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                System.out.println("What is the expiration month? Please enter the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
                     if (temp.matches("[0-9]+") && temp.length()==2 && Integer.parseInt(temp)<= 12){
@@ -301,10 +305,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         break;
                     }
                     else
-                        System.out.println("This is not a vaild month, please try again.");
+                        System.out.println("This is not a valid month, please try again.");
                 }
 
-                System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                System.out.println("What is the expiration year? Please enter the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
                     if (temp.matches("[0-9]+") && temp.length()==2){
@@ -312,7 +316,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         break;
                     }
                     else
-                        System.out.println("This is not a vaild year, please try again.");
+                        System.out.println("This is not a valid year, please try again.");
                 }
 
                 break;
@@ -320,11 +324,11 @@ Records records = new Records();// not sure if this is the correct way to go abo
                 System.out.println("What is the credit card holders name?");
                 cardHolder = scanner.nextLine();
 
-                System.out.print("What is the card number?\n Please only enter the numbers, no spaces or dashes.");
+                System.out.print("What is the card number? Please only enter the numbers, no spaces or dashes.\n");
                 while (true){
                     temp = scanner.nextLine();
                     if (temp.matches("[0-9]+")&& temp.length()==16){
-                        CardNumber = Integer.parseInt(temp);
+                        CardNumber = Long.parseLong(temp);
                         break;
                     }
                     else
@@ -339,10 +343,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         break;
                     }
                     else
-                        System.out.println("This is not a vaild CSV number, please try again.");
+                        System.out.println("This is not a valid CSV number, please try again.");
                 }
 
-                System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                System.out.println("What is the expiration month? Please enter the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
                     if (temp.matches("[0-9]+") && temp.length()==2 && Integer.parseInt(temp)<= 12){
@@ -350,10 +354,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         break;
                     }
                     else
-                        System.out.println("This is not a vaild month, please try again.");
+                        System.out.println("This is not a valid month, please try again.");
                 }
 
-                System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                System.out.println("What is the expiration year? Please enter the month as a two digit number as it is displayed on the card.");
                 while (true){
                     temp = scanner.nextLine();
                     if (temp.matches("[0-9]+") && temp.length()==2){
@@ -361,7 +365,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         break;
                     }
                     else
-                        System.out.println("This is not a vaild year, please try again.");
+                        System.out.println("This is not a valid year, please try again.");
                 }
 
                 break;
@@ -370,15 +374,14 @@ Records records = new Records();// not sure if this is the correct way to go abo
         CreditCard creditCard =  new CreditCard(cardHolder, expMonth, expYear, CardNumber, CSV);
 
         records.create_reservation(res_type, date_in, date_out, name, creditCard, email);
-        System.out.println("Reservation created succefully!");
+        System.out.println("Reservation created successfully!");
     }
 
     private void edit_reservation() {
         String param, temp, name, email, cardHolder;
-        int expMonth, expYear, CardNumber, CSV, res_id;
-        long daysbetween, daysInAdvance;
+        int expMonth, expYear, CSV, res_id;
+        long daysbetween, daysInAdvance, CardNumber;
         LocalDate date_in, date_out, currentDay, date;
-        Records record = new Records();
         Scanner scanner = new Scanner(System.in);
 
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
@@ -388,8 +391,8 @@ Records records = new Records();// not sure if this is the correct way to go abo
         date = LocalDate.from(DTF.parse(scanner.nextLine()));
         System.out.print("Enter the name of the guest\n");
         name = scanner.nextLine();
-        res_id = choose_single(lookup(date), name);
-        Reservation reservation = record.getResDB().get(res_id);
+        res_id = choose_single(records.lookup(date), name);
+        Reservation reservation = records.getResDB().get(res_id);
 
         // Initialize variables with current res info
         email = reservation.getEmail();
@@ -405,7 +408,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
 
         // set the days in advanced parameter
         if (reservation.getResType() == Reservation.ResType.conventional)
-            daysInAdvance = 999;
+            daysInAdvance = 0;
         else if (reservation.getResType() == Reservation.ResType.prepaid)
             daysInAdvance = 90;
         else if (reservation.getResType() == Reservation.ResType.sixty_day)
@@ -413,7 +416,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
         else if (reservation.getResType() == Reservation.ResType.incentive)
             daysInAdvance = 30;
         else
-            daysInAdvance = 999;
+            daysInAdvance = 0;
 
         while (true) {
             System.out.print("What would you like to change in the reservation?\n");
@@ -491,7 +494,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                             System.out.println("What is the new credit card holders name?");
                             cardHolder = scanner.nextLine();
                         } else if (temp.toLowerCase().contains("number")) {
-                            System.out.print("What is the new card number?\n Please only enter the numbers, no spaces or dashes.");
+                            System.out.print("What is the new card number? Please only enter the numbers, no spaces or dashes.\n");
                             while (true){
                                 temp = scanner.nextLine();
                                 if (temp.matches("[0-9]+")&& temp.length()==16){
@@ -510,10 +513,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
                                     break;
                                 }
                                 else
-                                    System.out.println("This is not a vaild CSV number, please try again.");
+                                    System.out.println("This is not a valid CSV number, please try again.");
                             }
-                        } else if (temp.toLowerCase().contains("experation") && temp.toLowerCase().contains("month")) {
-                            System.out.println("What is the experation month? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                        } else if (temp.toLowerCase().contains("expiration") && temp.toLowerCase().contains("month")) {
+                            System.out.println("What is the expiration month? Please enter the month as a two digit number as it is displayed on the card.");
                             while (true){
                                 temp = scanner.nextLine();
                                 if (temp.matches("[0-9]+") && temp.length()==2 && Integer.parseInt(temp)<= 12){
@@ -521,10 +524,10 @@ Records records = new Records();// not sure if this is the correct way to go abo
                                     break;
                                 }
                                 else
-                                    System.out.println("This is not a vaild month, please try again.");
+                                    System.out.println("This is not a valid month, please try again.");
                             }
-                        } else if (temp.toLowerCase().contains("experation") && temp.toLowerCase().contains("year")) {
-                            System.out.println("What is the experation year? \nPlease enther the month as a two digit number as it is displayed on the card.");
+                        } else if (temp.toLowerCase().contains("expiration") && temp.toLowerCase().contains("year")) {
+                            System.out.println("What is the expiration year? Please enter the month as a two digit number as it is displayed on the card.");
                             while (true){
                                 temp = scanner.nextLine();
                                 if (temp.matches("[0-9]+") && temp.length()==2){
@@ -532,17 +535,20 @@ Records records = new Records();// not sure if this is the correct way to go abo
                                     break;
                                 }
                                 else
-                                    System.out.println("This is not a vaild year, please try again.");
+                                    System.out.println("This is not a valid year, please try again.");
                             }
                         } else {
-                            System.out.println("That is not a valid credit card parameter, please try again\n");
+                            System.out.println("That is not a valid credit card parameter, please try again");
                         }
                         break;
                     } else {
-                       System.out.print("Changing credit card info is not valid for prepaid reservations\n");
+                        System.out.print("Changing credit card info is not valid for prepaid reservations\n");
                     }
                 }
                 break;
+            } else if (param.toLowerCase().contains("type") || param.toLowerCase().contains("kind")){
+                reservation.setCancledStatus(true);
+                res_Create(true);
             } else if (param.toLowerCase().contains("quit") || param.toLowerCase().contains("exit") || param.toLowerCase().contains("stop")) { //Stop editing a reservation
                 System.out.print("Exiting Create Reservation\n");
                 return;
@@ -552,7 +558,8 @@ Records records = new Records();// not sure if this is the correct way to go abo
                 +"Reservation email (for 60 day reservations only)\n"
                 +"Reservation check in date\n"
                 +"Reservation check out date\n"
-                +"Credit card information (for conventional, incentive and 60 day reservations only)\n");
+                +"Credit card information (for conventional, incentive and 60 day reservations only)\n"
+                +"Reservation type (Will require you to reenter all your information)\n");
             } else {
                 System.out.print("A valid reservation change has not been entered.\n");
             }
@@ -563,7 +570,8 @@ Records records = new Records();// not sure if this is the correct way to go abo
         card.setCardNumber(CardNumber);
         card.setExpMonth(expMonth);
         card.setExpYear(expYear);
-        record.edit_reservation(res_id, reservation.getResType(),date_in, date_out, name, card, email);
+
+        records.edit_reservation(res_id, reservation.getResType(),date_in, date_out, name, card, email);
     }
 
     /**
@@ -602,20 +610,20 @@ Records records = new Records();// not sure if this is the correct way to go abo
         LocalDate date;
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         // TODO Leave this for the constructor to do
-        Records record = new Records();
 
-        System.out.print("Enter the day the reservation was made\n");
+        System.out.print("Enter the day the reservation was made. Date must be in dd-mm-yy format\n");
         date = LocalDate.from(DTF.parse(scanner.nextLine()));
         System.out.print("Enter the name of the guest\n");
         String name = scanner.nextLine();
-        res_id = choose_single(lookup(date), name);
-        Reservation reservation = record.getResDB().get(res_id);
+        res_id = choose_single(records.lookup(date), name);
+        Reservation reservation = records.getResDB().get(res_id);
         System.out.print("Are you sure you want to cancel your reservation?\n");
         cancel = scanner.nextLine();
-        if (cancel.toLowerCase().contains("yes"))
+        if (cancel.toLowerCase().contains("yes")){
             reservation.setCancledStatus(Boolean.TRUE);
-        else
-            System.out.print("Reservation not canceled\n");
+            System.out.print("Reservation has been cancelled\n");
+        } else
+            System.out.print("Reservation has not been cancelled\n");
 
     }
 
@@ -633,64 +641,77 @@ Records records = new Records();// not sure if this is the correct way to go abo
         int ResID = choose_single(listFromLookup, name); // choose_single of this class only
         Reservation res_obj = new Reservation();
         res_obj.check_in(ResID); // check_in of Res class called and ResId(of the current reservation obtained form lookup) is passed
-        edit_reservation(); // to update the checkin flag
 
     }
 
     private void mk_DailyOccupancy() {
         LocalDate date = LocalDate.now();
-        Records record = new Records();
-        Reports report = new Reports(record);
+        Reports report = new Reports(records);
         report.mk_daily_occupancy(date);
 
     }
 
     private void mk_DailyArrival() {
         LocalDate date = LocalDate.now();
-        Records record = new Records();
-        Reports report = new Reports(record);
+        Reports report = new Reports(records);
         report.mk_daily_arrivals(date);
     }
 
     private void mk_MonthlyOccupancy() {
         LocalDate date = LocalDate.now();
-        Records record = new Records();
-        Reports report = new Reports(record);
+        Reports report = new Reports(records);
         report.mk_expected_occupancy(date);
     }
 
     private void mk_ExpectedIncome() {
         LocalDate date = LocalDate.now();
-        Records record = new Records();
-        Reports report = new Reports(record);
+        Reports report = new Reports(records);
         report.mk_expected_income(date);
     }
 
     private void mk_IncentivesDiscount() {
         LocalDate date = LocalDate.now();
-        Records record = new Records();
-        Reports report = new Reports(record);
+        Reports report = new Reports(records);
         report.mk_incentives(date);
     }
 
     private void mk_Bill() {
         LocalDate date = LocalDate.now();
-        Records record = new Records();
-        Reports report = new Reports(record);
+        Reports report = new Reports(records);
         int res_id;
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter the name of the guest\n");
         String name = scanner.nextLine();
-        res_id = choose_single(lookup(date), name);
-        Reservation reservation = record.getResDB().get(res_id);
+        res_id = choose_single(records.lookup(date), name);
+        Reservation reservation = records.getResDB().get(res_id);
         report.mk_bill(reservation);
     }
 
     private void mk_Email() {
+        Reports report = new Reports(records);
+        report.send_reminders();
     }
 
     private void changeBaseRate() {
+        DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What date do you want this new base rate to start? Date must be in dd-mm-yy format");
+        LocalDate date = LocalDate.from(DTF.parse(scanner.nextLine()));
+        System.out.println("What is the new base rate?");
+        String baseRate = scanner.nextLine();
+        records.change_baseRate(date, Float.parseFloat(baseRate));
+    }
+    private void penaltyCheck(){
+        List<Pair<Integer, Reservation>> currentDateReservations;
+        LocalDate currentDate= LocalDate.now();
+      currentDateReservations = lookup(currentDate);
+      for(Pair<Integer, Reservation> single: currentDateReservations){
+          Reservation res =single.getValue();
+          if(res.getDateIn()== currentDate.minusDays(1) && res.getCheckedInStatus()== false){
+           mk_Bill(); // Mk_bill called to include the penalty charges in that customer's bill        
+          }  
+      }      
     }
 
     private void exit() {
