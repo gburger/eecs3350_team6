@@ -62,6 +62,7 @@ public class Reservation implements Serializable {
         Reservation reservation = record.getResDB().get(res_id);
         reservation.setCheckInStatus(true);
         System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
+        System.out.println("Your room number is: "+reservation.getRoomNumber());
     }
 
     
