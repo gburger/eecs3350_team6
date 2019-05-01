@@ -121,16 +121,16 @@ public class Reservation implements Serializable {
 
     public String toString() {
         return format("Reservation(%s, in: %s, out: %s, \"%s\", <%s>, %s, %d, chgd: %b, cncl: %b, cko: %b)",
-        res_type.toString(),
-        date_in.toString(),
-        date_out.toString(),
-        name,
-        email,
-        cc.toString(),
-        roomNumber,
-        is_Changed,
-        is_Cancled,
-        is_CheckedOut);
+                      res_type.toString(),
+                      date_in.toString(),
+                      date_out.toString(),
+                      name,
+                      email,
+                      (cc == null) ? "Null" : cc.toString(),
+                      roomNumber,
+                      is_Changed,
+                      is_Cancled,
+                      is_CheckedOut);
     }
 
 }

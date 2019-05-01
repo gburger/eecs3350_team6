@@ -11,7 +11,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
+
 import opheliasoasis.Reservation.ResType;
+
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import static javax.mail.Message.RecipientType.TO;
 
 /**
  * Interface and workhorse for all report generating tasks.
@@ -20,7 +30,10 @@ import opheliasoasis.Reservation.ResType;
  */
 public class Reports {
     public DecimalFormat df = new DecimalFormat("#.00");
-    public Reports(Records records) {
+    private Records db;
+
+    public Reports(Records db) {
+        this.db = db;
     }
 
     /**
@@ -234,21 +247,47 @@ public class Reports {
      * Find 60-day reservations which require reminding and send the emails.
      */
     public void send_reminders() {
-        Records db = new Records();
+        String from = "reservations@opheliasoasis.com";
+        String host = "localhost";
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", host);
+        Session session = Session.getDefaultInstance(properties);
+
+        if (db == null) {
+            Records db = new Records();
+        }
         List<Pair<Integer, Reservation>> reservations;
-        reservations = db.lookup(LocalDate.now());
         int reminderDate = 45;
+        reservations = db.lookup(LocalDate.now().plusDays(reminderDate));
+
+        if (reservations.size() == 0) {
+            System.out.print("No emails need to be sent today\n");
+            return;
+        }
+
+        System.out.println(reservations.toString());
         for (Pair<Integer, Reservation> reservation : reservations) {
-            if (reservation.getValue().getResType() == ResType.sixty_day){
-                if(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getValue().getDateIn()) == reminderDate){
-                    System.out.print("Dear " + reservation.getValue().getEmail() + ",\n"
+            if ((reservation.getValue().getResType() == ResType.sixty_day)
+            || (ChronoUnit.DAYS.between(LocalDate.now(), reservation.getValue().getDateIn()) == reminderDate)
+            || (reservation.getValue().getCancledStatus())){
+                    try {
+                        MimeMessage message = new MimeMessage(session);
+                        message.addRecipient(TO, new InternetAddress(reservation.getValue().getEmail()));
+                        message.setFrom(new InternetAddress(from));
+                        message.setSubject("Reservation Payment Reminder");
+                        message.setText("Dear " + reservation.getValue().getName() + ",\n"
                     +"Today is 45 days before your expected arrival date. You must pay "
                     +"for your reservation within 15 days, otherwise it will be cancelled\n"
                     +"Thank you for your interest in staying at Ophelias Oasis\n");
-                } else {
-                    System.out.print("No emails need to be sent today\n");
+
+                        Transport.send(message);
+                        System.out.print("Email sent to customer: " + reservation.getValue().getName());
+                    } catch (MessagingException e) {
+                        System.out.print("Email failed to send to customer: " + reservation.getValue().getName());
+                        e.printStackTrace();
+                    }
+
                 }
-            }
         }
     }
 }
