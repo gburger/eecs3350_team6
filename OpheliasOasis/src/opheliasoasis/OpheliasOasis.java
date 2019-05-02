@@ -617,7 +617,8 @@ Records records = new Records();// not sure if this is the correct way to go abo
         String name = scanner.nextLine();
         res_id = choose_single(records.lookup(date), name);
         Reservation reservation = records.getResDB().get(res_id);
-        System.out.print("Are you sure you want to cancel your reservation?\n");
+        System.out.print("Are you sure you want to cancel your reservation? No refund will be paid unless you cancel" +
+                "before 3 days before your expected arrival date and made a conventional or incentive reservation\n");
         cancel = scanner.nextLine();
         if (cancel.toLowerCase().contains("yes")){
             reservation.setCancledStatus(Boolean.TRUE);

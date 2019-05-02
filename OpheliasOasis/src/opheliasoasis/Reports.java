@@ -43,15 +43,15 @@ public class Reports {
         for (Reservation temp1 : temp) {
             if (temp1.getDateIn().isBefore(date)) {
                 System.out.print("Room Number: " + temp1.getRoomNumber());
-                System.out.print(" Name: " + temp1.getName());
-                System.out.println(" Departure Date: " + temp1.getDateOut());
+                System.out.print(", Name: " + temp1.getName());
+                System.out.println(", Departure Date: " + temp1.getDateOut());
             } else if (temp1.getDateOut().equals(date)) {
                 System.out.print("Room Number: " + temp1.getRoomNumber());
-                System.out.print(" Name: *" + temp1.getName());
-                System.out.println(" Departure Date: " + temp1.getDateOut());
+                System.out.print(", Name: *" + temp1.getName());
+                System.out.println(", Departure Date: " + temp1.getDateOut());
             } else {
                 System.out.print("Room Number: " + temp1.getRoomNumber());
-                System.out.println(" Name: " + temp1.getName());
+                System.out.println(", Name: " + temp1.getName());
             }
         }
     }
@@ -75,9 +75,9 @@ public class Reports {
         System.out.println("Daily Arrivals Report");
         for (Reservation temp1 : temp) {
             System.out.print("Name: " + temp1.getName());
-            System.out.print(" Reservation Type: " + temp1.getResType());
-            System.out.print(" Room Number: " + temp1.getRoomNumber());
-            System.out.println(" Departure Date: " + temp1.getDateOut());
+            System.out.print(", Reservation Type: " + temp1.getResType());
+            System.out.print(", Room Number: " + temp1.getRoomNumber());
+            System.out.println(", Departure Date: " + temp1.getDateOut());
         }
     }
 
@@ -93,6 +93,11 @@ public class Reports {
         double occRate;
         occRate = 0;
         System.out.println("Expected Occupancy Report");
+        System.out.print("                     Prepaid Reservations: ");
+        System.out.print(" Sixty Day Reservations: ");
+        System.out.print(" Conventional Reservations: ");
+        System.out.print(" Incentive Reservations: ");
+        System.out.println(" Number of Reserved Rooms: ");
         for (int i = 0; i < 30; i++) {
             sixtyDay = 0;
             incentive = 0;
@@ -114,14 +119,14 @@ public class Reports {
                 }
             }
             System.out.print("Date: " + date.plusDays(i));
-            System.out.print(" Prepaid Reservations: " + prepaid);
-            System.out.print(" Sixty Day Reservations: " + sixtyDay);
-            System.out.print(" Conventional Reservations: " + conventional);
-            System.out.print(" Incentive Reservations: " + incentive);
-            System.out.println(" Number of Resereved Rooms: " + numRooms);
-            occRate += numRooms/45;
+            System.out.print("                         " + prepaid);
+            System.out.print("                         " + sixtyDay);
+            System.out.print("                         " + conventional);
+            System.out.print("                         " + incentive);
+            System.out.println("                          " + numRooms);
+            occRate += (numRooms/45.0);
         }
-        System.out.println("Occupancy Rate: " + occRate/30);
+        System.out.println("Occupancy Rate: " + (occRate/30)*100 + "%");
     }
 
     /**
@@ -134,6 +139,8 @@ public class Reports {
         double baseRate, perResIncome, dailyIncome, totalIncome, avgIncome;
         totalIncome = 0;
         System.out.println("Expected Income Report");
+        System.out.print("Date: ");
+        System.out.println("           Income: ");
         for (int i = 0; i < 30; i++) {
             dailyIncome = 0;
             reservations = db.lookup(date.plusDays(i));
@@ -155,11 +162,11 @@ public class Reports {
                     dailyIncome += perResIncome;
                 }
             }
-            System.out.print("Date: " + date.plusDays(i));
-            System.out.println(" Income: " + df.format(dailyIncome));
+            System.out.print(date.plusDays(i));
+            System.out.println("            " + df.format(dailyIncome));
             totalIncome += dailyIncome;
         }
-        avgIncome = totalIncome/30;
+        avgIncome = totalIncome/30.0;
         System.out.println("Total Income: " + df.format(totalIncome));
         System.out.println("Average Income: " + df.format(avgIncome));
     }
@@ -172,6 +179,8 @@ public class Reports {
         Records db = new Records();
         List<Pair<Integer, Reservation>> reservations;
         System.out.println("Incentive Report");
+        System.out.print("Date: ");
+        System.out.println("          Incentives Discount: ");
         double perResLoss, dailyLoss, totalLoss, avgLoss, baseRate;
         totalLoss = 0;
         for (int i = 0; i < 30; i++) {
@@ -183,15 +192,15 @@ public class Reports {
                     if (reservation.getValue().getResType() == ResType.incentive)
                         perResLoss = baseRate*0.20;
                     else 
-                        perResLoss = 0;
+                        perResLoss = 0.0;
                     dailyLoss += perResLoss;
                 }
             }
-            System.out.print("Date: " + date.plusDays(i));
-            System.out.println(" Incentives Discount: " + df.format(dailyLoss));
+            System.out.print(date.plusDays(i));
+            System.out.println("                         " + df.format(dailyLoss));
             totalLoss += dailyLoss;
         }
-        avgLoss = totalLoss/30;
+        avgLoss = totalLoss/30.0;
         System.out.println("Total Incentives Discount: " + df.format(totalLoss));
         System.out.println("Average Incentives Discount: " + df.format(avgLoss));
     }
@@ -203,31 +212,100 @@ public class Reports {
      */
     public void mk_bill(Reservation reservation) {
         LocalDate date = LocalDate.now();
-        System.out.println("Date: " + date);
-        System.out.println("Customer Name: " + reservation.getName() + "\nRoom Number: " + reservation.getRoomNumber());
-        System.out.println("Arrival Date: " + reservation.getDateIn() + ", Departure Date: " + reservation.getDateOut());
-        long daysbetween;
-        daysbetween= ChronoUnit.DAYS.between(reservation.getDateIn(), reservation.getDateOut());
-        System.out.println("Number of nights stayed: " + daysbetween);
-        if (reservation.getResType() == ResType.sixty_day || reservation.getResType() == ResType.prepaid) {
-            System.out.println("Day reservation was paid: " + reservation.getDatePaid());
-        }
-        double totalCharge, resCharge, baseRate;
-        baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
-        if (!reservation.getChangedStatus()) {
-            if (reservation.getResType() == ResType.incentive)
-                resCharge = baseRate*0.80;
-            else if (reservation.getResType() == ResType.prepaid)
-                resCharge = baseRate*0.75;
-            else if (reservation.getResType() == ResType.sixty_day)
-                resCharge = baseRate*0.85;
-            else
-                resCharge = baseRate;
+        if (!reservation.getCancledStatus()) {
+            System.out.println("Date: " + date);
+            System.out.println("Customer Name: " + reservation.getName() + "\nRoom Number: " + reservation.getRoomNumber());
+            System.out.println("Arrival Date: " + reservation.getDateIn() + ", Departure Date: " + reservation.getDateOut());
+            long daysbetween;
+            daysbetween = ChronoUnit.DAYS.between(reservation.getDateIn(), reservation.getDateOut());
+            System.out.println("Number of nights stayed: " + daysbetween);
+            if (reservation.getResType() == ResType.sixty_day || reservation.getResType() == ResType.prepaid) {
+                System.out.println("Day reservation was paid: " + reservation.getDatePaid());
+            }
+            double totalCharge, resCharge, baseRate;
+            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            if (!reservation.getChangedStatus()) {
+                if (reservation.getResType() == ResType.incentive)
+                    resCharge = baseRate * 0.80;
+                else if (reservation.getResType() == ResType.prepaid)
+                    resCharge = baseRate * 0.75;
+                else if (reservation.getResType() == ResType.sixty_day)
+                    resCharge = baseRate * 0.85;
+                else
+                    resCharge = baseRate;
+            } else {
+                resCharge = baseRate * 1.10;
+            }
+            totalCharge = resCharge * daysbetween;
+            System.out.println("Total Charge: " + df.format(totalCharge));
+        } else if (reservation.getCancledStatus() && (reservation.getResType() == ResType.conventional ||
+                reservation.getResType() == ResType.incentive) && ChronoUnit.DAYS.between(date, reservation.getDateIn()) <= 3){
+            System.out.println("Reservation was cancelled too close to the expected arrival date. You will be billed for the first day");
+            System.out.println("Date: " + date);
+            System.out.println("Customer Name: " + reservation.getName());
+            System.out.println("Expected arrival Date: " + reservation.getDateIn() + ", Expected departure Date: " + reservation.getDateOut());
+            double totalCharge, resCharge, baseRate;
+            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            if (!reservation.getChangedStatus()) {
+                if (reservation.getResType() == ResType.incentive)
+                    resCharge = baseRate * 0.80;
+                else
+                    resCharge = baseRate;
+            } else {
+                resCharge = baseRate * 1.10;
+            }
+            totalCharge = resCharge;
+            System.out.println("Total Charge: " + df.format(totalCharge));
+        } else if (reservation.getCancledStatus() && (reservation.getResType() == ResType.prepaid || reservation.getResType() == ResType.sixty_day)) {
+            System.out.println("Date: " + date);
+            System.out.println("Customer Name: " + reservation.getName());
+            System.out.println("Expected arrival Date: " + reservation.getDateIn() + ", Expected departure Date: " + reservation.getDateOut());
+            long daysbetween;
+            daysbetween = ChronoUnit.DAYS.between(reservation.getDateIn(), reservation.getDateOut());
+            System.out.println("Number of nights stayed: " + daysbetween);
+            if (reservation.getResType() == ResType.sixty_day || reservation.getResType() == ResType.prepaid) {
+                System.out.println("Day reservation was paid: " + reservation.getDatePaid());
+            }
+            double totalCharge, resCharge, baseRate;
+            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            if (!reservation.getChangedStatus()) {
+                if (reservation.getResType() == ResType.incentive)
+                    resCharge = baseRate * 0.80;
+                else if (reservation.getResType() == ResType.prepaid)
+                    resCharge = baseRate * 0.75;
+                else if (reservation.getResType() == ResType.sixty_day)
+                    resCharge = baseRate * 0.85;
+                else
+                    resCharge = baseRate;
+            } else {
+                resCharge = baseRate * 1.10;
+            }
+            totalCharge = resCharge * daysbetween;
+            System.out.println("Total Charge: " + df.format(totalCharge));
+        } else if (reservation.getDateIn()== date.minusDays(1) && reservation.getCheckedInStatus()== false) {
+            System.out.println("Guest did not show up on expected arrival date. They will be billed for the first day due to the no show policy");
+            System.out.println("Date: " + date);
+            System.out.println("Customer Name: " + reservation.getName());
+            System.out.println("Expected arrival Date: " + reservation.getDateIn() + ", Expected departure Date: " + reservation.getDateOut());
+            double totalCharge, resCharge, baseRate;
+            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            if (!reservation.getChangedStatus()) {
+                if (reservation.getResType() == ResType.incentive)
+                    resCharge = baseRate * 0.80;
+                else if (reservation.getResType() == ResType.prepaid)
+                    resCharge = baseRate * 0.75;
+                else if (reservation.getResType() == ResType.sixty_day)
+                    resCharge = baseRate * 0.85;
+                else
+                    resCharge = baseRate;
+            } else {
+                resCharge = baseRate * 1.10;
+            }
+            totalCharge = resCharge;
+            System.out.println("Total Charge: " + df.format(totalCharge));
         } else {
-            resCharge = baseRate*1.10;
+            System.out.println("Refund was paid, no bill to print");
         }
-        totalCharge = resCharge*daysbetween; 
-        System.out.println("Total Charge: " + df.format(totalCharge));
     }
 
     /**
