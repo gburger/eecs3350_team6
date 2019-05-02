@@ -761,9 +761,9 @@ public class OpheliasOasis {
       for(Pair<Integer, Reservation> single: currentDateReservations){
           Reservation res =single.getValue();
           if(res.getDateIn()== currentDate.minusDays(1) && res.getCheckedInStatus()== false){
-           mk_Bill(); // Mk_bill called to include the penalty charges in that customer's bill        
-          }  
-      }      
+           mk_Bill(); // Mk_bill called to include the penalty charges in that customer's bill
+          }
+      }
     }
 
     private void exit() {
