@@ -15,8 +15,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 
-import opheliasoasis.Reservation.ResType;
-
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -358,8 +356,8 @@ public class Reports {
         System.out.println(reservations.toString());
         for (Pair<Integer, Reservation> reservation : reservations) {
             if ((reservation.getValue().getResType() == ResType.sixty_day)
-            || (ChronoUnit.DAYS.between(LocalDate.now(), reservation.getValue().getDateIn()) == reminderDate)
-            || (reservation.getValue().getCancledStatus())){
+            && (ChronoUnit.DAYS.between(LocalDate.now(), reservation.getValue().getDateIn()) == reminderDate)
+            && (!reservation.getValue().getCancledStatus())){
                     try {
                         MimeMessage message = new MimeMessage(session);
                         message.addRecipient(TO, new InternetAddress(reservation.getValue().getEmail()));
