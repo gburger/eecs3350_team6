@@ -59,6 +59,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                         + "Make Incentive: Generate the incentive discount report\n"
                         + "Make Bill: Generate a bill\n"
                         + "Make Email: Generate a reminder email\n"
+                        + "Make Penalty: Generates the bills for all the no shows\n"
                         + "Change Base Rate: Change the base rate for a particular day\n"
                         + "Exit: Save and exit the reservation system\n");
             }
@@ -100,6 +101,9 @@ Records records = new Records();// not sure if this is the correct way to go abo
                 }
                 else if(cmd.toLowerCase().contains("email")){
                     mk_Email();
+                }
+                else if(cmd.toLowerCase().contains("penalty") || cmd.toLowerCase().contains("no show")){
+                    penaltyCheck();
                 }
             }
             else if(cmd.toLowerCase().contains("change")){
