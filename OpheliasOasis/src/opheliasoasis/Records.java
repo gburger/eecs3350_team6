@@ -24,7 +24,7 @@ public class Records {
     private ArrayList<Integer> rate_db;
 
     public Records() {
-        this("");
+        this("C:\\Users\\15brd\\IdeaProjects\\eecs3350_team6\\database.txt");
     }
 
     public ArrayList<Reservation> getResDB() {
