@@ -18,7 +18,7 @@ import java.util.Scanner;
  * @author Computer
  */
 public class OpheliasOasis {
-Records records = new Records();// not sure if this is the correct way to go about this
+    Records records = new Records();// not sure if this is the correct way to go about this
     /**
      * @param args the command line arguments
      */
@@ -70,7 +70,7 @@ Records records = new Records();// not sure if this is the correct way to go abo
                     edit_reservation();
                 }
                 else if(cmd.toLowerCase().contains("look")){
-                    res_Checkin();
+                    lookup();
                 }
                 else if(cmd.toLowerCase().contains("can")){
                     res_Cancel();
@@ -574,13 +574,65 @@ Records records = new Records();// not sure if this is the correct way to go abo
         records.edit_reservation(res_id, reservation.getResType(),date_in, date_out, name, card, email);
     }
 
+    private List lookup() {
+        return lookup(null);
+    }
     /**
      * Prompt a query and return a list of matching reservations.
      * @param date_in
      * @return
      */
     private List lookup(LocalDate date_in) {
-        // TODO
+        if (date_in == null) {
+            DateTimeFormatter DTF;
+            DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
+            Scanner scanner = new Scanner(System.in);
+
+            while (date_in == null) {
+                System.out.println("Date to lookup: ");
+                try {
+                    date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
+                } catch (Exception e) {
+                    date_in = null;
+                }
+
+                if (date_in == null) {
+                    System.out.println("Incorrect date: Please use the format mm-dd-yy.");
+                }
+            }
+        }
+
+        System.out.println("date_in = " + date_in);
+
+        List<Pair<Integer, Reservation>> reservations = records.lookup(date_in);
+
+        System.out.println("reservations = " + reservations);
+
+        System.out.println("Reservations:\n-------------");
+        System.out.printf(
+                "%15.15s | %10.10s | %10.10s | %12.12s | %15.15s | %15.15s | %16.16s | %5.5s | %3.3s | %4.4s | %7.7s | %8.8s | %10.10s | %11.11s\n",
+                "Name", "Date In", "Date Out", "Type", "e-mail", "Cardholder", "Card Number",
+                "Exp Date", "CCV", "Room", "Changed", "Canceled", "Checked In",
+                "Checked Out");
+        System.out.println("----------------+------------+------------+--------------+-----------------+-----------------+------------------+-------+-----+------+---------+----------+------------+------------");
+        for (Pair<Integer, Reservation> res_pair : reservations) {
+            Reservation res = res_pair.getValue();
+            System.out.printf(
+                    "%15.15s | %10.10s | %10.10s | %12.12s | %15.15s | %15.15s | %16.16s | %5.5s | %3.3s | %4.4s | %7.7s | %8.8s | %10.10s | %11.11s\n",
+                    res.getName(), res.getDateIn().toString(),
+                    res.getDateOut().toString(), res.getResType(),
+                    res.getEmail(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getCardHolder(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getCardNumber(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getExpMonth() + "/" + res.getCreditCard().getExpYear(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getCSV(),
+                    res.getCreditCard() == null ? null : res.getRoomNumber(),
+                    res.getChangedStatus(), res.getChangedStatus() ? "true" : "false",
+                    res.getCheckedInStatus() ? "true" : "false",
+                    res.getCheckedOutStatus() ? "true" : "false");
+        }
+
+
         return null;
     }
 

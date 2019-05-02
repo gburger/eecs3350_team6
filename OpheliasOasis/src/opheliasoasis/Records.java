@@ -22,10 +22,12 @@ public class Records {
     private String db_loc;
     private ArrayList<Reservation> res_db;
     private ArrayList<Integer> rate_db;
+    // To be an absolute path to a mapped network drive on a production deployment.
+    private final String backup_loc = "backup.db";
 
     public Records() {
-        this("");
-    }
+        this("oo.db");
+   }
 
     public ArrayList<Reservation> getResDB() {
         return res_db;
@@ -109,11 +111,11 @@ public class Records {
 
     public void change_baseRate(LocalDate date, float new_rate) {
 
-
         write_db();
     }
 
     public void backup_records() {
+        write_db(backup_loc);
     }
 
     public void assignDailyRoomnumbers(LocalDate date_in){
@@ -165,7 +167,12 @@ public class Records {
         }
     }
 
+
     private void write_db() {
+        write_db(db_loc);
+    }
+
+    private void write_db(String loc) {
 
         if (this.res_db == null || this.rate_db == null) {
             out.println("Writing blank structures to database.");
@@ -173,7 +180,7 @@ public class Records {
             this.rate_db = new ArrayList<Integer>();
         }
 
-        try (FileOutputStream file = new FileOutputStream(db_loc);
+        try (FileOutputStream file = new FileOutputStream(loc);
              ObjectOutputStream out = new ObjectOutputStream(file)) {
 
             out.writeObject(new Pair<>(res_db, rate_db));
