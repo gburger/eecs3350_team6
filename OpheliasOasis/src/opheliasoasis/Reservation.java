@@ -7,8 +7,6 @@ package opheliasoasis;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
-import javafx.util.Pair;
 
 import static java.lang.String.format;
 

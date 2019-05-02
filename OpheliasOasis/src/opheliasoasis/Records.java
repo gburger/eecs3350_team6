@@ -9,6 +9,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import static java.lang.System.out;
 
@@ -21,11 +22,13 @@ public class Records {
 
     private String db_loc;
     private ArrayList<Reservation> res_db;
-    private ArrayList<Integer> rate_db;
+    private TreeMap<LocalDate, Float> rate_db;
+    // To be an absolute path to a mapped network drive on a production deployment.
+    private final String backup_loc = "backup.db";
 
     public Records() {
-        this("");
-    }
+        this("oo.db");
+   }
 
     public ArrayList<Reservation> getResDB() {
         return res_db;
@@ -109,11 +112,17 @@ public class Records {
 
     public void change_baseRate(LocalDate date, float new_rate) {
 
+        rate_db.put(date, new_rate);
 
         write_db();
     }
 
+    public Float get_baseRate(LocalDate date) {
+        return rate_db.get(date);
+    }
+
     public void backup_records() {
+        write_db(backup_loc);
     }
 
     public void assignDailyRoomnumbers(LocalDate date_in){
@@ -148,32 +157,36 @@ public class Records {
     }
 
     private void read_db() {
-        Pair<ArrayList<Reservation>, ArrayList<Integer>> dbs;
+        Pair<ArrayList<Reservation>, TreeMap<LocalDate, Float>> dbs;
 
         try (FileInputStream file = new FileInputStream(db_loc);
              ObjectInputStream in = new ObjectInputStream(file)) {
 
-            dbs = (Pair<ArrayList<Reservation>, ArrayList<Integer>>) in.readObject();
+            dbs = (Pair<ArrayList<Reservation>, TreeMap<LocalDate, Float>>) in.readObject();
 
             this.res_db = dbs.getKey();
             this.rate_db = dbs.getValue();
 
         } catch (IOException | ClassNotFoundException e) {
             out.println("Database file is unreadable or not found. Working on empty database.");
-            this.res_db = new ArrayList<Reservation>();
-            this.rate_db = new ArrayList<Integer>();
+            this.res_db = new ArrayList<>();
+            this.rate_db = new TreeMap<>();
         }
     }
 
     private void write_db() {
+        write_db(db_loc);
+    }
+
+    private void write_db(String loc) {
 
         if (this.res_db == null || this.rate_db == null) {
             out.println("Writing blank structures to database.");
-            this.res_db = new ArrayList<Reservation>();
-            this.rate_db = new ArrayList<Integer>();
+            this.res_db = new ArrayList<>();
+            this.rate_db = new TreeMap<>();
         }
 
-        try (FileOutputStream file = new FileOutputStream(db_loc);
+        try (FileOutputStream file = new FileOutputStream(loc);
              ObjectOutputStream out = new ObjectOutputStream(file)) {
 
             out.writeObject(new Pair<>(res_db, rate_db));
