@@ -41,10 +41,11 @@ public class OpheliasOasis {
     private void parse() {
         String cmd;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Ophelia's Oasis Reservation System.\n"
-                          +"Type a command to begin, or type help for more information");
+        
 
         while(true){
+            System.out.println("Welcome to the Ophelia's Oasis Reservation System.\n"
+                          +"Type a command to begin, or type help for more information");
             cmd = scanner.nextLine();
             if (cmd.toLowerCase().contains("help")||cmd.toLowerCase().contains("?")){
                 System.out.println("Command List:\n"
