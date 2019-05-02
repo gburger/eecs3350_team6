@@ -8,6 +8,7 @@ package opheliasoasis;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -585,21 +586,30 @@ public class OpheliasOasis {
     private List lookup(LocalDate date_in) {
         if (date_in == null) {
             DateTimeFormatter DTF;
+            String temp;
             DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
             Scanner scanner = new Scanner(System.in);
 
             while (date_in == null) {
-                System.out.println("Date to lookup: ");
-                try {
-                    date_in = LocalDate.from(DTF.parse(scanner.nextLine()));
-                } catch (Exception e) {
-                    date_in = null;
+                System.out.println("Enter date to lookup or type 'all' to print the full datebase: ");
+                temp = scanner.nextLine();
+                if (temp.toLowerCase().contains("all")){
+                    fullPrint();
+                    return null;
                 }
+                else{
+                    try {
+                        date_in = LocalDate.from(DTF.parse(temp));
+                    } catch (Exception e) {
+                        date_in = null;
+                    }
 
-                if (date_in == null) {
-                    System.out.println("Incorrect date: Please use the format mm-dd-yy.");
+                    if (date_in == null) {
+                        System.out.println("Incorrect date: Please use the format mm-dd-yy.");
+                    }
                 }
-            }
+        
+           }
         }
 
         System.out.println("date_in = " + date_in);
@@ -634,6 +644,32 @@ public class OpheliasOasis {
 
 
         return null;
+    }
+    private void fullPrint (){
+        ArrayList <Reservation> res_DB;
+        res_DB=records.getResDB();
+         System.out.println("Reservations:\n-------------");
+        System.out.printf(
+                "%15.15s | %10.10s | %10.10s | %12.12s | %15.15s | %15.15s | %16.16s | %5.5s | %3.3s | %4.4s | %7.7s | %8.8s | %10.10s | %11.11s\n",
+                "Name", "Date In", "Date Out", "Type", "e-mail", "Cardholder", "Card Number",
+                "Exp Date", "CCV", "Room", "Changed", "Canceled", "Checked In",
+                "Checked Out");
+        System.out.println("----------------+------------+------------+--------------+-----------------+-----------------+------------------+-------+-----+------+---------+----------+------------+------------");
+        for (Reservation res : res_DB){
+        System.out.printf(
+                    "%15.15s | %10.10s | %10.10s | %12.12s | %15.15s | %15.15s | %16.16s | %5.5s | %3.3s | %4.4s | %7.7s | %8.8s | %10.10s | %11.11s\n",
+                    res.getName(), res.getDateIn().toString(),
+                    res.getDateOut().toString(), res.getResType(),
+                    res.getEmail(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getCardHolder(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getCardNumber(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getExpMonth() + "/" + res.getCreditCard().getExpYear(),
+                    res.getCreditCard() == null ? null : res.getCreditCard().getCSV(),
+                    res.getCreditCard() == null ? null : res.getRoomNumber(),
+                    res.getChangedStatus(), res.getChangedStatus() ? "true" : "false",
+                    res.getCheckedInStatus() ? "true" : "false",
+                    res.getCheckedOutStatus() ? "true" : "false");
+        }
     }
 
     /**
