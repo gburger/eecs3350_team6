@@ -26,26 +26,23 @@ public class OpheliasOasis {
     public static void main(String[] args) {
         OpheliasOasis OO = new OpheliasOasis(); //needs load logic in constuctor
 
-        System.out.println("Software Engineering");
-
         OO.parse();
 
-        //TODO: Exit logic
+        
 
     }
 
     public OpheliasOasis() {
-        //TODO: Load logic
+
     }
 
     private void parse() {
         String cmd;
         Scanner scanner = new Scanner(System.in);
-        
+        System.out.println("Welcome to the Ophelia's Oasis Reservation System.");
 
         while(true){
-            System.out.println("Welcome to the Ophelia's Oasis Reservation System.\n"
-                          +"Type a command to begin, or type help for more information");
+            System.out.println("Type a command, or type help for more information");
             cmd = scanner.nextLine();
             if (cmd.toLowerCase().contains("help")||cmd.toLowerCase().contains("?")){
                 System.out.println("Command List:\n"
