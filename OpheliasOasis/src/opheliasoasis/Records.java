@@ -22,7 +22,7 @@ public class Records {
 
     private String db_loc;
     private ArrayList<Reservation> res_db;
-    private TreeMap<LocalDate, Integer> rate_db;
+    private TreeMap<LocalDate, Float> rate_db;
     // To be an absolute path to a mapped network drive on a production deployment.
     private final String backup_loc = "backup.db";
 
@@ -117,7 +117,7 @@ public class Records {
         write_db();
     }
 
-    public Integer get_baseRate(LocalDate date) {
+    public Float get_baseRate(LocalDate date) {
         return rate_db.get(date);
     }
 
@@ -157,12 +157,12 @@ public class Records {
     }
 
     private void read_db() {
-        Pair<ArrayList<Reservation>, TreeMap<LocalDate, Integer>> dbs;
+        Pair<ArrayList<Reservation>, TreeMap<LocalDate, Float>> dbs;
 
         try (FileInputStream file = new FileInputStream(db_loc);
              ObjectInputStream in = new ObjectInputStream(file)) {
 
-            dbs = (Pair<ArrayList<Reservation>, TreeMap<LocalDate, Integer>>) in.readObject();
+            dbs = (Pair<ArrayList<Reservation>, TreeMap<LocalDate, Float>>) in.readObject();
 
             this.res_db = dbs.getKey();
             this.rate_db = dbs.getValue();
