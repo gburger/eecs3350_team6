@@ -62,6 +62,7 @@ public class Reservation implements Serializable {
         Reservation reservation = record.getResDB().get(res_id);
         reservation.setCheckInStatus(true);
         System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
+        System.out.println("Your room number is: "+reservation.getRoomNumber());
     }
 
     
@@ -129,16 +130,16 @@ public class Reservation implements Serializable {
 
     public String toString() {
         return format("Reservation(%s, in: %s, out: %s, \"%s\", <%s>, %s, %d, chgd: %b, cncl: %b, cko: %b)",
-        res_type.toString(),
-        date_in.toString(),
-        date_out.toString(),
-        name,
-        email,
-        cc.toString(),
-        roomNumber,
-        is_Changed,
-        is_Cancled,
-        is_CheckedOut);
+                      res_type.toString(),
+                      date_in.toString(),
+                      date_out.toString(),
+                      name,
+                      email,
+                      (cc == null) ? "Null" : cc.toString(),
+                      roomNumber,
+                      is_Changed,
+                      is_Cancled,
+                      is_CheckedOut);
     }
 
 }

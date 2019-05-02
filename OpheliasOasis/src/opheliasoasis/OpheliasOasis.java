@@ -703,6 +703,17 @@ Records records = new Records();// not sure if this is the correct way to go abo
         String baseRate = scanner.nextLine();
         records.change_baseRate(date, Float.parseFloat(baseRate));
     }
+    private void penaltyCheck(){
+        List<Pair<Integer, Reservation>> currentDateReservations;
+        LocalDate currentDate= LocalDate.now();
+      currentDateReservations = lookup(currentDate);
+      for(Pair<Integer, Reservation> single: currentDateReservations){
+          Reservation res =single.getValue();
+          if(res.getDateIn()== currentDate.minusDays(1) && res.getCheckedInStatus()== false){
+           mk_Bill(); // Mk_bill called to include the penalty charges in that customer's bill        
+          }  
+      }      
+    }
 
     private void exit() {
     }
