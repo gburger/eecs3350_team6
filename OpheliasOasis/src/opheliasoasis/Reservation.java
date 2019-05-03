@@ -37,7 +37,7 @@ public class Reservation implements Serializable {
     public Reservation(){}
 
     public Reservation(ResType res_type, LocalDate date_in, LocalDate date_out,
-                       String name, CreditCard cc, String email) {
+                       String name, CreditCard cc, String email, boolean isChanged) {
         this.res_type = res_type;
         this.date_in = date_in;
         this.date_out = date_out;
@@ -45,7 +45,7 @@ public class Reservation implements Serializable {
         this.cc = cc;
         this.email = email;
         roomNumber = 00;
-        is_Changed = false;
+        is_Changed = isChanged;
         is_Cancled = false;
         is_CheckedOut = false;
         is_CheckedIn = false;
