@@ -376,7 +376,7 @@ public class OpheliasOasis {
         }
         CreditCard creditCard =  new CreditCard(cardHolder, expMonth, expYear, CardNumber, CSV);
 
-        records.create_reservation(res_type, date_in, date_out, name, creditCard, email);
+        records.create_reservation(res_type, date_in, date_out, name, creditCard, email, isChanged);
         System.out.println("Reservation created successfully!");
     }
 
