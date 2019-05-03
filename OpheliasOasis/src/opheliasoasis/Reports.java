@@ -7,6 +7,11 @@ package opheliasoasis;
 
 import opheliasoasis.Reservation.ResType;
 
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -14,12 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
-
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import static javax.mail.Message.RecipientType.TO;
 
@@ -165,7 +164,7 @@ public class Reports {
         for (int i = 0; i < 30; i++) {
             dailyIncome = 0;
             reservations = db.lookup(date.plusDays(i));
-            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            baseRate = db.get_baseRate(date.plusDays(i));
             for (Pair<Integer, Reservation> reservation : reservations) {
                 if (reservation.getValue().getCancledStatus() == false) {
                     if (reservation.getValue().getChangedStatus() == false) {
@@ -209,7 +208,7 @@ public class Reports {
         for (int i = 0; i < 30; i++) {
             dailyLoss = 0;
             reservations = db.lookup(date.plusDays(i));
-            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            baseRate = db.get_baseRate(date.plusDays(i)); //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
             for (Pair<Integer, Reservation> reservation : reservations) {
                 if (reservation.getValue().getCancledStatus() == false) {
                     if (reservation.getValue().getResType() == ResType.incentive)
@@ -246,7 +245,7 @@ public class Reports {
                 System.out.println("Day reservation was paid: " + reservation.getDatePaid());
             }
             double totalCharge, resCharge, baseRate;
-            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            baseRate = db.get_baseRate(date); //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
             if (!reservation.getChangedStatus()) {
                 if (reservation.getResType() == ResType.incentive)
                     resCharge = baseRate * 0.80;
@@ -268,7 +267,7 @@ public class Reports {
             System.out.println("Customer Name: " + reservation.getName());
             System.out.println("Expected arrival Date: " + reservation.getDateIn() + ", Expected departure Date: " + reservation.getDateOut());
             double totalCharge, resCharge, baseRate;
-            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            baseRate = db.get_baseRate(date); //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
             if (!reservation.getChangedStatus()) {
                 if (reservation.getResType() == ResType.incentive)
                     resCharge = baseRate * 0.80;
@@ -290,7 +289,7 @@ public class Reports {
                 System.out.println("Day reservation was paid: " + reservation.getDatePaid());
             }
             double totalCharge, resCharge, baseRate;
-            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            baseRate = db.get_baseRate(date); //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
             if (!reservation.getChangedStatus()) {
                 if (reservation.getResType() == ResType.incentive)
                     resCharge = baseRate * 0.80;
@@ -311,7 +310,7 @@ public class Reports {
             System.out.println("Customer Name: " + reservation.getName());
             System.out.println("Expected arrival Date: " + reservation.getDateIn() + ", Expected departure Date: " + reservation.getDateOut());
             double totalCharge, resCharge, baseRate;
-            baseRate = 0; //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
+            baseRate = db.get_baseRate(date); //CHANGE ONCE WE IMPLEMENT GETTING THE BASERATE
             if (!reservation.getChangedStatus()) {
                 if (reservation.getResType() == ResType.incentive)
                     resCharge = baseRate * 0.80;

@@ -237,7 +237,7 @@ public class OpheliasOasis {
                             break;
                     }
                     catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                       System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
                    }
                }
  //Gather Reservation specific information
@@ -449,7 +449,7 @@ public class OpheliasOasis {
                 }
                 break;
             } else if (param.toLowerCase().contains("date") && (param.toLowerCase().contains("in") || param.toLowerCase().contains("arrival"))) { //change the arrival date
-                System.out.print("What is the new arrival date? In dd-mm-yy format, ie 01-01-19\n");
+                System.out.print("What is the new arrival date? In mm-dd-yy format, ie 01-01-19\n");
                 while (true) {
                     reEnterDate:
                     try {
@@ -464,12 +464,12 @@ public class OpheliasOasis {
                             break;
                     }
                     catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                       System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
                     }
                 }
                 break;
             } else if (param.toLowerCase().contains("date") && (param.toLowerCase().contains("out") || param.toLowerCase().contains("departure"))) { //change the departure date
-                System.out.print("What is this the new check out date for this reservation? In dd-mm-yy format, ie 01-01-19\n");
+                System.out.print("What is this the new check out date for this reservation? In mm-dd-yy format, ie 01-01-19\n");
                 while (true) {
                     reEnterDate:
                     try {
@@ -484,7 +484,7 @@ public class OpheliasOasis {
                             break;
                     }
                     catch (Exception e) {
-                       System.out.print("Invalid date, try again. Date must be in dd-mm-yy format\n");
+                       System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
                     }
                 }
                 break;
@@ -701,8 +701,15 @@ public class OpheliasOasis {
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         // TODO Leave this for the constructor to do
 
-        System.out.print("Enter the day the reservation was made. Date must be in dd-mm-yy format\n");
-        date = LocalDate.from(DTF.parse(scanner.nextLine()));
+        System.out.print("Enter the day the reservation was made. Date must be in mm-dd-yy format\n");
+        while (true) {
+            try {
+                date = LocalDate.from(DTF.parse(scanner.nextLine()));
+                break;
+            } catch (Exception e) {
+                System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
+            }
+        }
         System.out.print("Enter the name of the guest\n");
         String name = scanner.nextLine();
         res_id = choose_single(records.lookup(date), name);
@@ -767,14 +774,24 @@ public class OpheliasOasis {
     }
 
     private void mk_Bill() {
-        LocalDate date = LocalDate.now();
+        LocalDate date_out;
+        DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
         Reports report = new Reports(records);
         int res_id;
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter the name of the guest\n");
         String name = scanner.nextLine();
-        res_id = choose_single(records.lookup(date), name);
+        System.out.print("Enter the check out date of the reservation. Date must be in mm-dd-yy format\n");
+        while (true) {
+            try {
+                date_out = LocalDate.from(DTF.parse(scanner.nextLine()));
+                break;
+            } catch (Exception e) {
+                System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
+            }
+        }
+        res_id = choose_single(records.lookup(date_out), name);
         Reservation reservation = records.getResDB().get(res_id);
         report.mk_bill(reservation);
     }
@@ -786,12 +803,30 @@ public class OpheliasOasis {
 
     private void changeBaseRate() {
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MM-dd-yy");
+        LocalDate startDate, endDate;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What date do you want this new base rate to start? Date must be in dd-mm-yy format");
-        LocalDate date = LocalDate.from(DTF.parse(scanner.nextLine()));
+        System.out.println("What date do you want this new base rate to start? Date must be in mm-dd-yy format");
+        while (true) {
+            try {
+                startDate = LocalDate.from(DTF.parse(scanner.nextLine()));
+                break;
+            } catch (Exception e) {
+                System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
+            }
+        }
+        System.out.println("What date do you want this new base rate to end? Date must be in mm-dd-yy format");
+        while (true) {
+            try {
+                endDate = LocalDate.from(DTF.parse(scanner.nextLine()));
+                break;
+            } catch (Exception e) {
+                System.out.print("Invalid date, try again. Date must be in mm-dd-yy format\n");
+            }
+        }
         System.out.println("What is the new base rate?");
         String baseRate = scanner.nextLine();
-        records.change_baseRate(date, Float.parseFloat(baseRate));
+        for (int i = 0; i < ChronoUnit.DAYS.between(startDate, endDate); i++)
+            records.change_baseRate(startDate.plusDays(i), Float.parseFloat(baseRate));
     }
     private void penaltyCheck(){
         List<Pair<Integer, Reservation>> currentDateReservations;
