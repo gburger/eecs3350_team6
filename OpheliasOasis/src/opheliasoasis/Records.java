@@ -100,10 +100,10 @@ public class Records {
     public Reservation create_reservation(Reservation.ResType res_type,
                                           LocalDate date_in, LocalDate date_out,
                                           String name,
-                                          CreditCard cc, String email) {
+                                          CreditCard cc, String email, boolean isChanged) {
 
         // TODO: Update for real constructor.
-        res_db.add(new Reservation(res_type,date_in, date_out, name, cc, email));
+        res_db.add(new Reservation(res_type,date_in, date_out, name, cc, email, isChanged));
 
         write_db();
 
@@ -118,7 +118,15 @@ public class Records {
     }
 
     public Float get_baseRate(LocalDate date) {
-        return rate_db.get(date);
+        Float baseRate;
+        try {
+            baseRate = rate_db.get(date);
+            return baseRate;
+        }
+        catch (Exception e){
+            return null;
+        }
+         
     }
 
     public void backup_records() {
