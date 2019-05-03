@@ -28,8 +28,6 @@ public class OpheliasOasis {
 
         OO.parse();
 
-        
-
     }
 
     public OpheliasOasis() {
@@ -60,7 +58,8 @@ public class OpheliasOasis {
                         + "Make Email: Generate a reminder email\n"
                         + "Make Penalty: Generates the bills for all the no shows\n"
                         + "Change Base Rate: Change the base rate for a particular day\n"
-                        + "Exit: Save and exit the reservation system\n");
+                        + "Exit: Save and exit the reservation system\n"
+                        + "Make Backup: makes the backup to a file called backup.db\n");
             }
             else if(cmd.toLowerCase().contains("res")){
                 if (cmd.toLowerCase().contains("cre")){
@@ -103,6 +102,9 @@ public class OpheliasOasis {
                 }
                 else if(cmd.toLowerCase().contains("penalty") || cmd.toLowerCase().contains("no show")){
                     penaltyCheck();
+                }
+                else if(cmd.toLowerCase().contains("back")){
+                    exit();
                 }
             }
             else if(cmd.toLowerCase().contains("change")){
@@ -794,7 +796,6 @@ public class OpheliasOasis {
         }
         res_id = choose_single(records.lookup(date_out), name);
         Reservation reservation = records.getResDB().get(res_id);
-        reservation.setCheckOutStatus(Boolean.TRUE);
         report.mk_bill(reservation);
     }
 
@@ -843,5 +844,6 @@ public class OpheliasOasis {
     }
 
     private void exit() {
+        records.backup_records();
     }
 }
