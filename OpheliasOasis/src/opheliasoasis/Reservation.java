@@ -54,16 +54,6 @@ public class Reservation implements Serializable {
     public ResType getResType(){
         return res_type;
     }
-
-    public void check_in(int res_id) {
-        Records record = new Records();
-        Reservation reservation = record.getResDB().get(res_id);
-        reservation.setCheckInStatus(true);
-        System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
-        System.out.println("Your room number is: "+reservation.getRoomNumber());
-    }
-
-    
     public LocalDate getDateIn(){
         return date_in;
     }

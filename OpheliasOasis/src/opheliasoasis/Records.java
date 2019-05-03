@@ -124,9 +124,19 @@ public class Records {
             return baseRate;
         }
         catch (Exception e){
-            return null;
+            System.out.println("Base rate not set for this date " + date);
+            return Float.valueOf(0);
         }
          
+    }
+
+    public void check_in(int res_id) {
+        Reservation reservation = getResDB().get(res_id);
+        reservation.setCheckInStatus(Boolean.TRUE);
+        System.out.println("The person has checked in and the reservation status is changed from expected arrival to occupied(checked in)");
+        System.out.println("Your room number is: "+reservation.getRoomNumber());
+
+        write_db();
     }
 
     public void backup_records() {
@@ -142,7 +152,7 @@ public class Records {
                res.setRoomNumber(j);
             }
         }
-
+        write_db();
 
     }
 

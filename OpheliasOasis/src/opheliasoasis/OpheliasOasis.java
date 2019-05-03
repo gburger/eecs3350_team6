@@ -624,7 +624,7 @@ public class OpheliasOasis {
         System.out.printf(
                 "%15.15s | %10.10s | %10.10s | %12.12s | %15.15s | %15.15s | %16.16s | %5.5s | %3.3s | %4.4s | %7.7s | %8.8s | %10.10s | %11.11s\n",
                 "Name", "Date In", "Date Out", "Type", "e-mail", "Cardholder", "Card Number",
-                "Exp Date", "CCV", "Room", "Changed", "Canceled", "Checked In",
+                "Exp Date", "CSV", "Room", "Changed", "Canceled", "Checked In",
                 "Checked Out");
         System.out.println("----------------+------------+------------+--------------+-----------------+-----------------+------------------+-------+-----+------+---------+----------+------------+------------");
         for (Pair<Integer, Reservation> res_pair : reservations) {
@@ -654,7 +654,7 @@ public class OpheliasOasis {
         System.out.printf(
                 "%15.15s | %10.10s | %10.10s | %12.12s | %15.15s | %15.15s | %16.16s | %5.5s | %3.3s | %4.4s | %7.7s | %8.8s | %10.10s | %11.11s\n",
                 "Name", "Date In", "Date Out", "Type", "e-mail", "Cardholder", "Card Number",
-                "Exp Date", "CCV", "Room", "Changed", "Canceled", "Checked In",
+                "Exp Date", "CSV", "Room", "Changed", "Canceled", "Checked In",
                 "Checked Out");
         System.out.println("----------------+------------+------------+--------------+-----------------+-----------------+------------------+-------+-----+------+---------+----------+------------+------------");
         for (Reservation res : res_DB){
@@ -737,8 +737,8 @@ public class OpheliasOasis {
         Records rec_obj = new Records();
         listFromLookup =rec_obj.lookup(current_date); // calling lookup of Records class
         int ResID = choose_single(listFromLookup, name); // choose_single of this class only
-        Reservation res_obj = new Reservation();
-        res_obj.check_in(ResID); // check_in of Res class called and ResId(of the current reservation obtained form lookup) is passed
+        //Reservation res_obj;
+        records.check_in(ResID); // check_in of Res class called and ResId(of the current reservation obtained form lookup) is passed
 
     }
 
@@ -751,6 +751,7 @@ public class OpheliasOasis {
 
     private void mk_DailyArrival() {
         LocalDate date = LocalDate.now();
+        records.assignDailyRoomnumbers(date);
         Reports report = new Reports(records);
         report.mk_daily_arrivals(date);
     }
@@ -793,6 +794,7 @@ public class OpheliasOasis {
         }
         res_id = choose_single(records.lookup(date_out), name);
         Reservation reservation = records.getResDB().get(res_id);
+        reservation.setCheckOutStatus(Boolean.TRUE);
         report.mk_bill(reservation);
     }
 
